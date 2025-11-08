@@ -35,9 +35,11 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "@types/bull": "^4.10.4",
     "@types/compression": "^1.8.1",
     "@types/morgan": "^1.9.10",
     "bcrypt": "^6.0.0",
+    "bull": "^4.16.5",
     "bullmq": "^5.63.0",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
@@ -49,6 +51,8 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "nodemailer": "^7.0.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.18.3",
     "zod": "^4.1.12"
   },
@@ -61,6 +65,8 @@
     "@types/node": "^24.10.0",
     "@types/nodemailer": "^6.4.17",
     "@types/supertest": "^6.0.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
     "eslint": "^9.39.1",
@@ -75,6 +81,8 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.9.3"
   },

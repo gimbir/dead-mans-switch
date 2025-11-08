@@ -18,6 +18,8 @@
 import express, { Application } from 'express';
 import helmet from 'helmet';
 import compression from 'compression';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from '@config/swagger.config.js';
 
 // Middleware
 import {
@@ -96,6 +98,8 @@ export function createApp(): Application {
         directives: {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
         },
       },
     })
@@ -227,6 +231,12 @@ export function createApp(): Application {
   const healthRouter = createHealthRouter(healthController);
 
   // ===== Register Routes =====
+  // API Documentation (Swagger UI)
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customSiteTitle: 'Dead Man\'s Switch API',
+    customCss: '.swagger-ui .topbar { display: none }',
+  }));
+
   // Health check routes (public, no authentication)
   app.use('/health', healthRouter);
 

@@ -11,7 +11,7 @@
  * - Error logging
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@generated/prisma/index.js';
 import { env } from '@config/env.config.js';
 
 /**

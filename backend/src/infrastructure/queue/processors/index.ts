@@ -7,3 +7,4 @@
 export { CheckSwitchesProcessor } from './CheckSwitchesProcessor.js';
 export { SendNotificationProcessor } from './SendNotificationProcessor.js';
 export { SendRemindersProcessor } from './SendRemindersProcessor.js';
+export { CleanupProcessor } from './CleanupProcessor.js';

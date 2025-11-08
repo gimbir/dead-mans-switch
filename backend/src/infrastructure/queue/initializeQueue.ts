@@ -22,6 +22,7 @@ import {
   CheckSwitchesProcessor,
   SendNotificationProcessor,
   SendRemindersProcessor,
+  CleanupProcessor,
 } from './processors/index.js';
 import { ISwitchRepository } from '@domain/repositories/ISwitchRepository.js';
 import { IMessageRepository } from '@domain/repositories/IMessageRepository.js';
@@ -95,6 +96,15 @@ export async function initializeQueue(dependencies: QueueDependencies): Promise<
       1 // Process one batch at a time
     );
 
+    // ===== Register Cleanup Processor =====
+    const cleanupProcessor = new CleanupProcessor();
+
+    queueManager.registerWorker(
+      QueueName.CLEANUP,
+      cleanupProcessor.createProcessor(),
+      1 // Process one cleanup job at a time
+    );
+
     // ===== Schedule Repeatable Jobs =====
 
     // Schedule check-switches job (runs every hour)
@@ -107,6 +117,12 @@ export async function initializeQueue(dependencies: QueueDependencies): Promise<
     await queueManager.addSendRemindersJob();
     logger.info('Send-reminders job scheduled', {
       cron: JOB_CONFIG.SEND_REMINDERS.CRON,
+    });
+
+    // Schedule cleanup job (runs daily at 2 AM)
+    await queueManager.addCleanupJob();
+    logger.info('Cleanup job scheduled', {
+      cron: '0 2 * * *',
     });
 
     logger.info('✅ Queue system initialized successfully');

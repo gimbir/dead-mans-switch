@@ -58,6 +58,7 @@ export enum QueueName {
   CHECK_SWITCHES = 'check-switches',
   SEND_NOTIFICATIONS = 'send-notifications',
   SEND_REMINDERS = 'send-reminders',
+  CLEANUP = 'cleanup',
 }
 
 /**
@@ -279,6 +280,35 @@ export class QueueManager {
     logger.info('Notification job added', {
       messageId: data.messageId,
       recipientEmail: data.recipientEmail,
+    });
+  }
+
+  /**
+   * Schedule cleanup job to run daily
+   */
+  public async addCleanupJob(): Promise<void> {
+    const queue = this.getQueue(QueueName.CLEANUP);
+
+    await queue.add(
+      'cleanup',
+      {
+        checkInRetentionDays: 90,  // Keep check-ins for 90 days
+        auditLogRetentionDays: 180, // Keep audit logs for 180 days
+        softDeleteRetentionDays: 30, // Permanently delete soft-deleted records after 30 days
+        timestamp: new Date(),
+      },
+      {
+        repeat: {
+          pattern: '0 2 * * *', // Run at 2 AM daily
+        },
+      }
+    );
+
+    logger.info('Cleanup job scheduled', {
+      cron: '0 2 * * *',
+      checkInRetentionDays: 90,
+      auditLogRetentionDays: 180,
+      softDeleteRetentionDays: 30
     });
   }
 

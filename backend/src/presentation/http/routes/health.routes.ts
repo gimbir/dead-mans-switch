@@ -26,61 +26,212 @@ export function createHealthRouter(healthController: HealthController): Router {
   const router = Router();
 
   /**
-   * GET /health
-   * Basic health check - returns 200 if server is running
-   *
-   * Response: 200 OK
-   * {
-   *   status: 'ok',
-   *   timestamp: '2024-01-01T00:00:00.000Z',
-   *   uptime: 123.456,
-   *   environment: 'development'
-   * }
+   * @swagger
+   * /health:
+   *   get:
+   *     tags:
+   *       - Health
+   *     summary: Basic health check
+   *     description: Returns server status and basic information
+   *     responses:
+   *       200:
+   *         description: Server is healthy
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: ok
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *                 uptime:
+   *                   type: number
+   *                   description: Server uptime in seconds
+   *                   example: 123.456
+   *                 environment:
+   *                   type: string
+   *                   example: development
    */
   router.get('/', healthController.health.bind(healthController));
 
   /**
-   * GET /health/db
-   * Database connection health check
-   *
-   * Response: 200 OK / 503 Service Unavailable
-   * {
-   *   status: 'ok' | 'error',
-   *   service: 'database',
-   *   timestamp: '2024-01-01T00:00:00.000Z',
-   *   message?: string
-   * }
+   * @swagger
+   * /health/db:
+   *   get:
+   *     tags:
+   *       - Health
+   *     summary: Database health check
+   *     description: Checks PostgreSQL database connection status
+   *     responses:
+   *       200:
+   *         description: Database is healthy
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: ok
+   *                 service:
+   *                   type: string
+   *                   example: database
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *       503:
+   *         description: Database is unavailable
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: error
+   *                 service:
+   *                   type: string
+   *                   example: database
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *                 message:
+   *                   type: string
+   *                   example: Database connection failed
    */
   router.get('/db', healthController.databaseHealth.bind(healthController));
 
   /**
-   * GET /health/redis
-   * Redis connection health check
-   *
-   * Response: 200 OK / 503 Service Unavailable
-   * {
-   *   status: 'ok' | 'error',
-   *   service: 'redis',
-   *   timestamp: '2024-01-01T00:00:00.000Z',
-   *   message?: string
-   * }
+   * @swagger
+   * /health/redis:
+   *   get:
+   *     tags:
+   *       - Health
+   *     summary: Redis health check
+   *     description: Checks Redis cache connection status
+   *     responses:
+   *       200:
+   *         description: Redis is healthy
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: ok
+   *                 service:
+   *                   type: string
+   *                   example: redis
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *       503:
+   *         description: Redis is unavailable
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: error
+   *                 service:
+   *                   type: string
+   *                   example: redis
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *                 message:
+   *                   type: string
+   *                   example: Redis connection failed
    */
   router.get('/redis', healthController.redisHealth.bind(healthController));
 
   /**
-   * GET /health/full
-   * Comprehensive health check for all services
-   *
-   * Response: 200 OK / 503 Service Unavailable
-   * {
-   *   status: 'ok' | 'degraded' | 'error',
-   *   timestamp: '2024-01-01T00:00:00.000Z',
-   *   uptime: 123.456,
-   *   services: {
-   *     database: { status: 'ok' | 'error', message?: string },
-   *     redis: { status: 'ok' | 'error', message?: string }
-   *   }
-   * }
+   * @swagger
+   * /health/full:
+   *   get:
+   *     tags:
+   *       - Health
+   *     summary: Comprehensive health check
+   *     description: Checks all services including database and Redis
+   *     responses:
+   *       200:
+   *         description: All services are healthy
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   enum: [ok, degraded, error]
+   *                   example: ok
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *                 uptime:
+   *                   type: number
+   *                   description: Server uptime in seconds
+   *                   example: 123.456
+   *                 services:
+   *                   type: object
+   *                   properties:
+   *                     database:
+   *                       type: object
+   *                       properties:
+   *                         status:
+   *                           type: string
+   *                           enum: [ok, error]
+   *                           example: ok
+   *                         message:
+   *                           type: string
+   *                     redis:
+   *                       type: object
+   *                       properties:
+   *                         status:
+   *                           type: string
+   *                           enum: [ok, error]
+   *                           example: ok
+   *                         message:
+   *                           type: string
+   *       503:
+   *         description: One or more services are unhealthy
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   enum: [degraded, error]
+   *                   example: degraded
+   *                 timestamp:
+   *                   type: string
+   *                   format: date-time
+   *                 uptime:
+   *                   type: number
+   *                 services:
+   *                   type: object
+   *                   properties:
+   *                     database:
+   *                       type: object
+   *                       properties:
+   *                         status:
+   *                           type: string
+   *                         message:
+   *                           type: string
+   *                     redis:
+   *                       type: object
+   *                       properties:
+   *                         status:
+   *                           type: string
+   *                         message:
+   *                           type: string
    */
   router.get('/full', healthController.fullHealth.bind(healthController));
 

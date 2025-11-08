@@ -30,24 +30,73 @@ export function createAuthRouter(authController: AuthController): Router {
   const router = Router();
 
   /**
-   * POST /auth/register
-   * Register a new user account
-   *
-   * Request Body:
-   * - email: string (valid email format)
-   * - password: string (min 8 characters)
-   * - name: string (min 2 characters)
-   *
-   * Response: 201 Created
-   * {
-   *   success: true,
-   *   data: {
-   *     userId: string,
-   *     email: string,
-   *     name: string,
-   *     message: string
-   *   }
-   * }
+   * @swagger
+   * /api/auth/register:
+   *   post:
+   *     tags:
+   *       - Authentication
+   *     summary: Register a new user
+   *     description: Create a new user account. A verification email will be sent.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - email
+   *               - password
+   *               - name
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *                 example: user@example.com
+   *               password:
+   *                 type: string
+   *                 format: password
+   *                 minLength: 8
+   *                 example: StrongPass123!
+   *               name:
+   *                 type: string
+   *                 minLength: 2
+   *                 maxLength: 100
+   *                 example: John Doe
+   *     responses:
+   *       201:
+   *         description: User registered successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: true
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     userId:
+   *                       type: string
+   *                       format: uuid
+   *                     email:
+   *                       type: string
+   *                     name:
+   *                       type: string
+   *                     message:
+   *                       type: string
+   *       400:
+   *         description: Validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Error'
+   *       409:
+   *         description: User already exists
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Error'
    */
   router.post(
     '/register',
@@ -56,40 +105,116 @@ export function createAuthRouter(authController: AuthController): Router {
   );
 
   /**
-   * POST /auth/login
-   * Authenticate user and receive tokens
-   *
-   * Request Body:
-   * - email: string
-   * - password: string
-   *
-   * Response: 200 OK
-   * {
-   *   success: true,
-   *   data: {
-   *     accessToken: string,
-   *     refreshToken: string,
-   *     user: { userId, email, name, isVerified }
-   *   }
-   * }
+   * @swagger
+   * /api/auth/login:
+   *   post:
+   *     tags:
+   *       - Authentication
+   *     summary: Login user
+   *     description: Authenticate user with email and password
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - email
+   *               - password
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *                 example: user@example.com
+   *               password:
+   *                 type: string
+   *                 format: password
+   *                 example: StrongPass123!
+   *     responses:
+   *       200:
+   *         description: Login successful
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: true
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     accessToken:
+   *                       type: string
+   *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   *                     refreshToken:
+   *                       type: string
+   *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   *                     user:
+   *                       type: object
+   *                       properties:
+   *                         userId:
+   *                           type: string
+   *                           format: uuid
+   *                         email:
+   *                           type: string
+   *                         name:
+   *                           type: string
+   *                         isVerified:
+   *                           type: boolean
+   *       401:
+   *         description: Invalid credentials
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Error'
    */
   router.post('/login', validate(authValidators.login), authController.login.bind(authController));
 
   /**
-   * POST /auth/refresh
-   * Refresh access token using refresh token
-   *
-   * Request Body:
-   * - refreshToken: string
-   *
-   * Response: 200 OK
-   * {
-   *   success: true,
-   *   data: {
-   *     accessToken: string,
-   *     refreshToken: string
-   *   }
-   * }
+   * @swagger
+   * /api/auth/refresh:
+   *   post:
+   *     tags:
+   *       - Authentication
+   *     summary: Refresh access token
+   *     description: Get a new access token using refresh token
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - refreshToken
+   *             properties:
+   *               refreshToken:
+   *                 type: string
+   *                 example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   *     responses:
+   *       200:
+   *         description: Token refreshed successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: true
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     accessToken:
+   *                       type: string
+   *                     refreshToken:
+   *                       type: string
+   *       401:
+   *         description: Invalid refresh token
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Error'
    */
   router.post(
     '/refresh',

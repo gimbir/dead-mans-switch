@@ -18,17 +18,6 @@ import { RATE_LIMIT_CONFIG } from '@shared/constants/config.js';
 import { Request, Response } from 'express';
 
 /**
- * Custom key generator that uses IP address and optionally user ID
- */
-const keyGenerator = (req: Request): string => {
-  // Use user ID if authenticated, otherwise use IP
-  const userId = (req as any).user?.id;
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
-
-  return userId ? `user:${userId}` : `ip:${ip}`;
-};
-
-/**
  * Custom handler for rate limit exceeded
  */
 const rateLimitHandler = (_req: Request, res: Response): void => {
@@ -49,9 +38,8 @@ export const globalRateLimiter = rateLimit({
   windowMs: RATE_LIMIT_CONFIG.GLOBAL.WINDOW_MS,
   max: RATE_LIMIT_CONFIG.GLOBAL.MAX_REQUESTS,
   message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
-  legacyHeaders: false, // Disable `X-RateLimit-*` headers
-  keyGenerator,
+  standardHeaders: true,
+  legacyHeaders: false,
   handler: rateLimitHandler,
   skip: (req: Request) => {
     // Skip rate limiting for health check endpoints
@@ -68,7 +56,6 @@ export const authRateLimiter = rateLimit({
   message: 'Too many authentication attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator,
   handler: rateLimitHandler,
   skipSuccessfulRequests: false, // Count all requests, even successful ones
 });
@@ -82,12 +69,6 @@ export const loginRateLimiter = rateLimit({
   message: 'Too many login attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req: Request) => {
-    // For login, use email + IP to prevent brute force attacks
-    const email = req.body?.email || 'unknown';
-    const ip = req.ip || req.socket.remoteAddress || 'unknown';
-    return `login:${email}:${ip}`;
-  },
   handler: rateLimitHandler,
   skipSuccessfulRequests: true, // Only count failed login attempts
 });
@@ -101,7 +82,6 @@ export const checkInRateLimiter = rateLimit({
   message: 'Too many check-in attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator,
   handler: rateLimitHandler,
   skipSuccessfulRequests: false,
 });
@@ -115,7 +95,6 @@ export const createRateLimiter = (windowMs: number, max: number) => {
     max,
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator,
     handler: rateLimitHandler,
   });
 };
