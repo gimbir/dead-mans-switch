@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ========================================
+   CENTRALIZED THEME SYSTEM
+   All theme colors managed in one place!
+   ======================================== */
+
+@layer base {
+  /* LIGHT MODE (Default) */
+  :root {
+    /* Background Colors */
+    --bg-primary: 255 255 255;        /* white */
+    --bg-secondary: 249 250 251;      /* gray-50 */
+    --bg-tertiary: 243 244 246;       /* gray-100 */
+    --bg-card: 255 255 255;           /* white */
+    --bg-hover: 243 244 246;          /* gray-100 */
+
+    /* Text Colors */
+    --text-primary: 17 24 39;         /* gray-900 */
+    --text-secondary: 75 85 99;       /* gray-600 */
+    --text-tertiary: 107 114 128;     /* gray-500 */
+    --text-inverse: 255 255 255;      /* white */
+
+    /* Border Colors */
+    --border-primary: 229 231 235;    /* gray-200 */
+    --border-secondary: 209 213 219;  /* gray-300 */
+
+    /* Brand Colors */
+    --color-primary: 79 70 229;       /* indigo-600 */
+    --color-primary-hover: 67 56 202; /* indigo-700 */
+    --color-secondary: 37 99 235;     /* blue-600 */
+    --color-secondary-hover: 29 78 216; /* blue-700 */
+
+    /* Status Colors */
+    --color-success: 34 197 94;       /* green-500 */
+    --color-error: 239 68 68;         /* red-500 */
+    --color-warning: 245 158 11;      /* amber-500 */
+    --color-info: 59 130 246;         /* blue-500 */
+  }
+
+  /* DARK MODE */
+  :root.dark {
+    /* Background Colors */
+    --bg-primary: 31 41 55;           /* gray-800 */
+    --bg-secondary: 17 24 39;         /* gray-900 */
+    --bg-tertiary: 55 65 81;          /* gray-700 */
+    --bg-card: 31 41 55;              /* gray-800 */
+    --bg-hover: 55 65 81;             /* gray-700 */
+
+    /* Text Colors */
+    --text-primary: 243 244 246;      /* gray-100 */
+    --text-secondary: 209 213 219;    /* gray-300 */
+    --text-tertiary: 156 163 175;     /* gray-400 */
+    --text-inverse: 17 24 39;         /* gray-900 */
+
+    /* Border Colors */
+    --border-primary: 55 65 81;       /* gray-700 */
+    --border-secondary: 75 85 99;     /* gray-600 */
+
+    /* Brand Colors */
+    --color-primary: 129 140 248;     /* indigo-400 - more visible in dark mode */
+    --color-primary-hover: 99 102 241; /* indigo-500 */
+    --color-secondary: 96 165 250;    /* blue-400 */
+    --color-secondary-hover: 59 130 246; /* blue-500 */
+
+    /* Status Colors (slightly adjusted for dark mode) */
+    --color-success: 34 197 94;       /* green-500 */
+    --color-error: 239 68 68;         /* red-500 */
+    --color-warning: 245 158 11;      /* amber-500 */
+    --color-info: 59 130 246;         /* blue-500 */
+  }
+
+  /* Apply theme colors to common elements */
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgb(var(--bg-primary));
+    color: rgb(var(--text-primary));
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   Use these instead of dark: prefix
+   ======================================== */
+
+@layer utilities {
+  /* Background utilities */
+  .bg-theme-primary { background-color: rgb(var(--bg-primary)); }
+  .bg-theme-secondary { background-color: rgb(var(--bg-secondary)); }
+  .bg-theme-card { background-color: rgb(var(--bg-card)); }
+  .bg-theme-hover:hover { background-color: rgb(var(--bg-hover)); }
+
+  /* Text utilities */
+  .text-theme-primary { color: rgb(var(--text-primary)); }
+  .text-theme-secondary { color: rgb(var(--text-secondary)); }
+  .text-theme-tertiary { color: rgb(var(--text-tertiary)); }
+  .text-theme-inverse { color: rgb(var(--text-inverse)); }
+
+  /* Border utilities */
+  .border-theme-primary { border-color: rgb(var(--border-primary)); }
+  .border-theme-secondary { border-color: rgb(var(--border-secondary)); }
+
+  /* Brand color utilities */
+  .bg-brand-primary { background-color: rgb(var(--color-primary)); }
+  .bg-brand-primary:hover { background-color: rgb(var(--color-primary-hover)); }
+  .text-brand-primary { color: rgb(var(--color-primary)); }
+  .border-brand-primary { border-color: rgb(var(--color-primary)); }
+}

@@ -1,0 +1,106 @@
+{
+  "common": {
+    "appName": "Dead Man's Switch",
+    "tagline": "Secure Message Delivery",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "email": "Email Address",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot your password?",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signUpNow": "Sign up now",
+      "success": "Welcome back! Login successful.",
+      "error": "Login failed. Please check your credentials.",
+      "securityNote": "Protected by industry-standard encryption"
+    },
+    "register": {
+      "title": "Create your account",
+      "tagline": "Join Dead Man's Switch - Secure your digital legacy",
+      "name": "Full Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "passwordStrength": "Password Strength:",
+      "passwordRequirements": "Password must contain:",
+      "requirement1": "At least 8 characters",
+      "requirement2": "Uppercase and lowercase letters",
+      "requirement3": "At least one number",
+      "strengthWeak": "Weak",
+      "strengthMedium": "Medium",
+      "strengthStrong": "Strong",
+      "strengthVeryStrong": "Very Strong",
+      "terms": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "success": "Account created successfully! Welcome aboard!",
+      "error": "Registration failed. Please try again.",
+      "securityNote": "Your data is encrypted and secure"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordMax": "Password must be less than 72 characters",
+      "passwordStrength": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "passwordMatch": "Passwords don't match",
+      "confirmPasswordRequired": "Please confirm your password",
+      "nameRequired": "Name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "nameMax": "Name must be less than 50 characters"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back!",
+    "overview": "Overview"
+  },
+  "switches": {
+    "title": "Switches",
+    "list": "My Switches",
+    "create": "Create Switch",
+    "edit": "Edit Switch",
+    "delete": "Delete Switch"
+  },
+  "messages": {
+    "title": "Messages",
+    "create": "Create Message",
+    "edit": "Edit Message"
+  },
+  "header": {
+    "dashboard": "Dashboard",
+    "switches": "Switches",
+    "logout": "Logout",
+    "login": "Login",
+    "signUp": "Sign Up"
+  },
+  "toast": {
+    "passwordResetSoon": "Password reset feature coming soon!"
+  }
+}

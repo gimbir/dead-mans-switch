@@ -1,0 +1,106 @@
+{
+  "common": {
+    "appName": "Ölü Adam Anahtarı",
+    "tagline": "Güvenli Mesaj İletimi",
+    "loading": "Yükleniyor...",
+    "submit": "Gönder",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "save": "Kaydet",
+    "close": "Kapat",
+    "confirm": "Onayla",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki"
+  },
+  "auth": {
+    "login": {
+      "title": "Hesabınıza giriş yapın",
+      "email": "E-posta Adresi",
+      "emailPlaceholder": "ornek@email.com",
+      "password": "Parola",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Beni hatırla",
+      "forgotPassword": "Parolanızı mı unuttunuz?",
+      "signIn": "Giriş Yap",
+      "signingIn": "Giriş yapılıyor...",
+      "noAccount": "Hesabınız yok mu?",
+      "signUpNow": "Hemen kaydolun",
+      "success": "Hoş geldiniz! Giriş başarılı.",
+      "error": "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.",
+      "securityNote": "Endüstri standardı şifreleme ile korunuyor"
+    },
+    "register": {
+      "title": "Hesap oluşturun",
+      "tagline": "Ölü Adam Anahtarı'na katılın - Dijital mirasınızı güvence altına alın",
+      "name": "Ad Soyad",
+      "namePlaceholder": "Ahmet Yılmaz",
+      "email": "E-posta Adresi",
+      "emailPlaceholder": "ornek@email.com",
+      "password": "Parola",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Parola Onayla",
+      "passwordStrength": "Parola Gücü:",
+      "passwordRequirements": "Parola şunları içermelidir:",
+      "requirement1": "En az 8 karakter",
+      "requirement2": "Büyük ve küçük harfler",
+      "requirement3": "En az bir rakam",
+      "strengthWeak": "Zayıf",
+      "strengthMedium": "Orta",
+      "strengthStrong": "Güçlü",
+      "strengthVeryStrong": "Çok Güçlü",
+      "terms": "Kabul ediyorum:",
+      "termsOfService": "Hizmet Şartları",
+      "and": "ve",
+      "privacyPolicy": "Gizlilik Politikası",
+      "createAccount": "Hesap Oluştur",
+      "creatingAccount": "Hesap oluşturuluyor...",
+      "hasAccount": "Zaten hesabınız var mı?",
+      "signIn": "Giriş yap",
+      "success": "Hesap başarıyla oluşturuldu! Hoş geldiniz!",
+      "error": "Kayıt başarısız. Lütfen tekrar deneyin.",
+      "securityNote": "Verileriniz şifrelenmiş ve güvenli"
+    },
+    "validation": {
+      "emailRequired": "E-posta gerekli",
+      "emailInvalid": "Geçersiz e-posta adresi",
+      "passwordRequired": "Parola gerekli",
+      "passwordMin": "Parola en az 8 karakter olmalı",
+      "passwordMax": "Parola en fazla 72 karakter olmalı",
+      "passwordStrength": "Parola en az bir büyük harf, bir küçük harf ve bir rakam içermelidir",
+      "passwordMatch": "Parolalar eşleşmiyor",
+      "confirmPasswordRequired": "Lütfen parolanızı onaylayın",
+      "nameRequired": "Ad gerekli",
+      "nameMin": "Ad en az 2 karakter olmalı",
+      "nameMax": "Ad en fazla 50 karakter olmalı"
+    }
+  },
+  "dashboard": {
+    "title": "Ana Sayfa",
+    "welcome": "Tekrar hoş geldiniz!",
+    "overview": "Genel Bakış"
+  },
+  "switches": {
+    "title": "Anahtarlar",
+    "list": "Anahtarlarım",
+    "create": "Anahtar Oluştur",
+    "edit": "Anahtarı Düzenle",
+    "delete": "Anahtarı Sil"
+  },
+  "messages": {
+    "title": "Mesajlar",
+    "create": "Mesaj Oluştur",
+    "edit": "Mesajı Düzenle"
+  },
+  "header": {
+    "dashboard": "Ana Sayfa",
+    "switches": "Anahtarlar",
+    "logout": "Çıkış Yap",
+    "login": "Giriş Yap",
+    "signUp": "Kayıt Ol"
+  },
+  "toast": {
+    "passwordResetSoon": "Parola sıfırlama özelliği yakında geliyor!"
+  }
+}
