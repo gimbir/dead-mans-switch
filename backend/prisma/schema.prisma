@@ -1,0 +1,203 @@
+// Dead Man's Switch - Prisma Schema
+// Enterprise-grade schema with advanced features
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// User Model
+// ============================================
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String    // Hashed with bcrypt/argon2
+  name          String
+  isVerified    Boolean   @default(false)
+  verificationToken String?
+
+  // Password reset
+  passwordResetToken  String?
+  passwordResetExpiry DateTime?
+
+  // Refresh token for JWT
+  refreshToken  String?
+
+  // Soft delete pattern
+  deletedAt     DateTime?
+
+  // Optimistic locking
+  version       Int       @default(0)
+
+  // Audit fields
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  switches      Switch[]
+
+  // Indexes for performance
+  @@index([email])
+  @@index([passwordResetToken])
+  @@map("users")
+}
+
+// ============================================
+// Switch Model
+// ============================================
+model Switch {
+  id                String      @id @default(uuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name              String
+  description       String?
+
+  // Check-in configuration
+  checkInInterval   Int         // in days
+  gracePeriod       Int         @default(0) // in days
+
+  // Status tracking
+  isActive          Boolean     @default(true)
+  status            SwitchStatus @default(ACTIVE)
+  lastCheckIn       DateTime?
+  nextCheckInDue    DateTime?
+
+  // Trigger tracking
+  triggeredAt       DateTime?
+
+  // Soft delete
+  deletedAt         DateTime?
+
+  // Optimistic locking
+  version           Int         @default(0)
+
+  // Audit
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  messages          Message[]
+  checkIns          CheckIn[]
+
+  // Indexes
+  @@index([userId])
+  @@index([status])
+  @@index([nextCheckInDue])
+  @@map("switches")
+}
+
+enum SwitchStatus {
+  ACTIVE      // Actively monitoring
+  PAUSED      // User paused
+  TRIGGERED   // Switch triggered, messages sent
+  EXPIRED     // Grace period expired
+}
+
+// ============================================
+// Message Model
+// ============================================
+model Message {
+  id                String        @id @default(uuid())
+  switchId          String
+  switch            Switch        @relation(fields: [switchId], references: [id], onDelete: Cascade)
+
+  // Recipient details
+  recipientEmail    String
+  recipientName     String
+
+  // Message content
+  subject           String?
+  encryptedContent  String        @db.Text // Encrypted at rest
+
+  // Delivery configuration
+  deliveryType      DeliveryType  @default(EMAIL)
+
+  // File attachments
+  attachmentUrl     String?
+
+  // Delivery tracking
+  isSent            Boolean       @default(false)
+  sentAt            DateTime?
+  deliveryAttempts  Int           @default(0)
+  lastAttemptAt     DateTime?
+  failureReason     String?       // NEW: Track delivery failure reason
+
+  // Idempotency (prevent duplicate sends)
+  idempotencyKey    String        @unique
+
+  // Soft delete pattern
+  deletedAt         DateTime?     // NEW: Soft delete support
+
+  // Optimistic locking
+  version           Int           @default(0) // NEW: Optimistic locking
+
+  // Audit
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Indexes
+  @@index([switchId])
+  @@index([isSent])
+  @@map("messages")
+}
+
+enum DeliveryType {
+  EMAIL
+  SMS
+  WEBHOOK
+}
+
+// ============================================
+// CheckIn Model
+// ============================================
+model CheckIn {
+  id            String    @id @default(uuid())
+  switchId      String
+  switch        Switch    @relation(fields: [switchId], references: [id], onDelete: Cascade)
+
+  // Check-in metadata
+  timestamp     DateTime  @default(now()) // Renamed from checkedInAt to match domain
+  ipAddress     String?
+  userAgent     String?
+  location      String?   // Optional geolocation
+  notes         String?   // NEW: User notes for this check-in
+
+  // Optimistic locking
+  version       Int       @default(0) // NEW: Optimistic locking
+
+  // Audit fields
+  createdAt     DateTime  @default(now()) // NEW: Audit trail
+  updatedAt     DateTime  @updatedAt      // NEW: Audit trail
+
+  // Indexes
+  @@index([switchId])
+  @@index([timestamp])
+  @@map("check_ins")
+}
+
+// ============================================
+// Audit Log Model (Optional - for compliance)
+// ============================================
+model AuditLog {
+  id            String    @id @default(uuid())
+  userId        String?
+  action        String    // CREATE, UPDATE, DELETE, LOGIN, etc.
+  entityType    String    // User, Switch, Message
+  entityId      String?
+  changes       Json?     // Store what changed
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
