@@ -32,8 +32,10 @@ const corsOptions: cors.CorsOptions = {
     // Allowed origins
     const allowedOrigins = [
       env.FRONTEND_URL,
+      env.BACKEND_URL, // Backend itself (for Swagger UI)
       'http://localhost:5173', // Vite dev server
       'http://localhost:3000', // Alternative dev port
+      'http://localhost:5000', // Backend dev server
     ];
 
     if (allowedOrigins.includes(origin)) {
