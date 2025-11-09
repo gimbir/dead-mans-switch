@@ -58,7 +58,7 @@ export type SwitchResponseDto = z.infer<typeof SwitchResponseDtoSchema>;
  * Paginated list response for switches
  */
 export const PaginatedSwitchesResponseDtoSchema = z.object({
-  switches: z.array(SwitchResponseDtoSchema),
+  items: z.array(SwitchResponseDtoSchema),
   pagination: z.object({
     page: z.number().int(),
     limit: z.number().int(),
@@ -122,7 +122,7 @@ export function createPaginatedSwitchesResponseDto(
   total: number
 ): PaginatedSwitchesResponseDto {
   return {
-    switches,
+    items: switches,
     pagination: {
       page,
       limit,

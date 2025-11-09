@@ -1,7 +1,7 @@
 {
-  "name": "dead-mans-switch-backend",
-  "version": "1.0.0",
-  "description": "Dead Man's Switch Backend API - Enterprise-grade TypeScript application with Clean Architecture",
+  "name": "if-i-should-die-before-i-wake-backend",
+  "version": "0.1.0",
+  "description": "If I Should Die Before I Wake - Backend API - Enterprise-grade TypeScript application with Clean Architecture",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
