@@ -71,13 +71,13 @@ export interface Switch {
   userId: string;
   name: string;
   description?: string;
-  checkInInterval: number;
-  gracePeriod: number;
+  checkInIntervalDays: number; // in days
+  gracePeriodDays: number; // in days
   isActive: boolean;
   status: SwitchStatus;
-  lastCheckIn?: string;
-  nextCheckInDue?: string;
-  triggeredAt?: string;
+  lastCheckInAt?: string; // ISO date string
+  nextCheckInDue?: string; // ISO date string
+  triggeredAt?: string; // ISO date string
   createdAt: string;
   updatedAt: string;
 }

@@ -12,7 +12,9 @@
     "confirm": "Onayla",
     "back": "Geri",
     "next": "İleri",
-    "previous": "Önceki"
+    "previous": "Önceki",
+    "showing": "Gösterilen",
+    "of": "/"
   },
   "auth": {
     "login": {
@@ -79,19 +81,104 @@
   "dashboard": {
     "title": "Ana Sayfa",
     "welcome": "Tekrar hoş geldiniz!",
-    "overview": "Genel Bakış"
+    "overview": "Genel Bakış",
+    "statistics": "İstatistikler",
+    "totalSwitches": "Toplam Anahtar",
+    "activeSwitches": "Aktif",
+    "triggeredSwitches": "Tetiklenen",
+    "pausedSwitches": "Duraklatılmış",
+    "upcomingCheckIns": "Yaklaşan Kontroller",
+    "noCheckIns": "Yaklaşan kontrol yok",
+    "viewAll": "Tüm Anahtarları Görüntüle",
+    "createNew": "Yeni Anahtar Oluştur",
+    "emptySwitches": "Henüz anahtar yok",
+    "emptyDescription": "Başlamak için ilk ölü adam anahtarınızı oluşturun",
+    "dueIn": "Kalan süre",
+    "overdue": "Gecikmiş",
+    "checkInNow": "Şimdi Kontrol Et",
+    "checkingIn": "Kontrol ediliyor...",
+    "checkInSuccess": "Kontrol başarılı!",
+    "checkInError": "Kontrol başarısız. Lütfen tekrar deneyin.",
+    "confirmCheckIn": "Kontrolü onayla?",
+    "confirmCheckInMessage": "Bu işlem geri sayım zamanlayıcınızı sıfırlayacak.",
+    "days": "gün",
+    "hours": "saat",
+    "minutes": "dakika"
   },
   "switches": {
     "title": "Anahtarlar",
     "list": "Anahtarlarım",
+    "listDescription": "Ölü adam anahtarlarınızı yönetin",
     "create": "Anahtar Oluştur",
     "edit": "Anahtarı Düzenle",
-    "delete": "Anahtarı Sil"
+    "delete": "Anahtarı Sil",
+    "deleteConfirm": "Bu anahtarı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "deleteSuccess": "Anahtar başarıyla silindi",
+    "deleteError": "Anahtar silinemedi",
+    "search": "Anahtar ara...",
+    "filterByStatus": "Duruma göre filtrele",
+    "allStatuses": "Tüm Durumlar",
+    "viewDetails": "Detayları Gör",
+    "nextCheckIn": "Sonraki kontrol",
+    "lastCheckIn": "Son kontrol",
+    "noDescription": "Açıklama eklenmemiş",
+    "status": {
+      "ACTIVE": "Aktif",
+      "PAUSED": "Duraklatılmış",
+      "TRIGGERED": "Tetiklendi",
+      "INACTIVE": "Pasif"
+    },
+    "interval": {
+      "label": "Kontrol aralığı",
+      "everyDay": "Her {{count}} gün",
+      "everyDay_plural": "Her {{count}} gün",
+      "everyHour": "Her {{count}} saat",
+      "everyHour_plural": "Her {{count}} saat"
+    },
+    "form": {
+      "name": "Anahtar Adı",
+      "namePlaceholder": "örn., Acil Durum Kişileri",
+      "nameHelper": "Bu anahtar için açıklayıcı bir isim (3-100 karakter)",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "İsteğe bağlı: Bu anahtarın ne için olduğunu açıklayın...",
+      "descriptionHelper": "İsteğe bağlı açıklama (maksimum 500 karakter)",
+      "checkInIntervalDays": "Kontrol Aralığı (gün)",
+      "checkInIntervalHelper": "Ne sıklıkla kontrol etmeniz gerekiyor (1-365 gün)",
+      "gracePeriodDays": "Ek Süre (gün)",
+      "gracePeriodHelper": "Tetiklenmeden önceki ek süre (0-365 gün, kontrol aralığını geçemez)",
+      "isActive": "Aktif",
+      "isActiveHelper": "Aktif olduğunda, anahtar kontrollerinizi izler",
+      "creating": "Anahtar oluşturuluyor...",
+      "updating": "Anahtar güncelleniyor...",
+      "createSuccess": "Anahtar başarıyla oluşturuldu!",
+      "updateSuccess": "Anahtar başarıyla güncellendi!",
+      "createError": "Anahtar oluşturulamadı. Lütfen tekrar deneyin.",
+      "updateError": "Anahtar güncellenemedi. Lütfen tekrar deneyin.",
+      "validation": {
+        "nameRequired": "Anahtar adı gerekli",
+        "nameMin": "İsim en az 3 karakter olmalı",
+        "nameMax": "İsim 100 karakteri geçemez",
+        "descriptionMax": "Açıklama 500 karakteri geçemez",
+        "intervalRequired": "Kontrol aralığı gerekli",
+        "intervalMin": "Aralık en az 1 gün olmalı",
+        "intervalMax": "Aralık 365 günü geçemez",
+        "gracePeriodRequired": "Ek süre gerekli",
+        "gracePeriodMin": "Ek süre en az 0 gün olmalı",
+        "gracePeriodMax": "Ek süre 365 günü geçemez",
+        "gracePeriodTooLong": "Ek süre kontrol aralığından uzun olamaz"
+      }
+    }
   },
   "messages": {
     "title": "Mesajlar",
     "create": "Mesaj Oluştur",
-    "edit": "Mesajı Düzenle"
+    "edit": "Mesajı Düzenle",
+    "noMessages": "Henüz mesaj yok",
+    "noMessagesDescription": "Bu anahtar tetiklendiğinde gönderilecek mesajları ekleyin",
+    "messageCount": "{{count}} mesaj",
+    "messageCount_plural": "{{count}} mesaj",
+    "recipient": "Alıcı",
+    "subject": "Konu"
   },
   "header": {
     "dashboard": "Ana Sayfa",

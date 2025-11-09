@@ -11,7 +11,7 @@ import { ProtectedRoute } from '@components/common/ProtectedRoute';
 import { LoginPage } from '@pages/auth/LoginPage';
 import { RegisterPage } from '@pages/auth/RegisterPage';
 import { DashboardPage } from '@pages/dashboard/DashboardPage';
-import { SwitchListPage } from '@pages/switch/SwitchListPage';
+import { SwitchListPage, SwitchCreatePage, SwitchDetailPage } from '@pages/switch';
 import { ThemeDemoPage } from '@pages/ThemeDemoPage';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
@@ -86,6 +86,22 @@ function App() {
           element={
             <ProtectedRoute>
               <SwitchListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.SWITCH_CREATE}
+          element={
+            <ProtectedRoute>
+              <SwitchCreatePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.SWITCH_DETAIL}
+          element={
+            <ProtectedRoute>
+              <SwitchDetailPage />
             </ProtectedRoute>
           }
         />

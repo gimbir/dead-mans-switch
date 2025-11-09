@@ -12,7 +12,9 @@
     "confirm": "Confirm",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "showing": "Showing",
+    "of": "of"
   },
   "auth": {
     "login": {
@@ -79,19 +81,104 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back!",
-    "overview": "Overview"
+    "overview": "Overview",
+    "statistics": "Statistics",
+    "totalSwitches": "Total Switches",
+    "activeSwitches": "Active",
+    "triggeredSwitches": "Triggered",
+    "pausedSwitches": "Paused",
+    "upcomingCheckIns": "Upcoming Check-ins",
+    "noCheckIns": "No upcoming check-ins",
+    "viewAll": "View All Switches",
+    "createNew": "Create New Switch",
+    "emptySwitches": "No switches yet",
+    "emptyDescription": "Create your first dead man's switch to get started",
+    "dueIn": "Due in",
+    "overdue": "Overdue",
+    "checkInNow": "Check-in Now",
+    "checkingIn": "Checking in...",
+    "checkInSuccess": "Check-in successful!",
+    "checkInError": "Check-in failed. Please try again.",
+    "confirmCheckIn": "Confirm check-in?",
+    "confirmCheckInMessage": "This will reset your countdown timer.",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes"
   },
   "switches": {
     "title": "Switches",
     "list": "My Switches",
+    "listDescription": "Manage your dead man's switches",
     "create": "Create Switch",
     "edit": "Edit Switch",
-    "delete": "Delete Switch"
+    "delete": "Delete Switch",
+    "deleteConfirm": "Are you sure you want to delete this switch? This action cannot be undone.",
+    "deleteSuccess": "Switch deleted successfully",
+    "deleteError": "Failed to delete switch",
+    "search": "Search switches...",
+    "filterByStatus": "Filter by status",
+    "allStatuses": "All Statuses",
+    "viewDetails": "View Details",
+    "nextCheckIn": "Next check-in",
+    "lastCheckIn": "Last check-in",
+    "noDescription": "No description provided",
+    "status": {
+      "ACTIVE": "Active",
+      "PAUSED": "Paused",
+      "TRIGGERED": "Triggered",
+      "INACTIVE": "Inactive"
+    },
+    "interval": {
+      "label": "Check-in interval",
+      "everyDay": "Every {{count}} day",
+      "everyDay_plural": "Every {{count}} days",
+      "everyHour": "Every {{count}} hour",
+      "everyHour_plural": "Every {{count}} hours"
+    },
+    "form": {
+      "name": "Switch Name",
+      "namePlaceholder": "e.g., Emergency Contacts",
+      "nameHelper": "A descriptive name for this switch (3-100 characters)",
+      "description": "Description",
+      "descriptionPlaceholder": "Optional: Describe what this switch is for...",
+      "descriptionHelper": "Optional description (max 500 characters)",
+      "checkInIntervalDays": "Check-in Interval (days)",
+      "checkInIntervalHelper": "How often you need to check in (1-365 days)",
+      "gracePeriodDays": "Grace Period (days)",
+      "gracePeriodHelper": "Extra time before triggering (0-365 days, cannot exceed check-in interval)",
+      "isActive": "Active",
+      "isActiveHelper": "When active, the switch will monitor your check-ins",
+      "creating": "Creating switch...",
+      "updating": "Updating switch...",
+      "createSuccess": "Switch created successfully!",
+      "updateSuccess": "Switch updated successfully!",
+      "createError": "Failed to create switch. Please try again.",
+      "updateError": "Failed to update switch. Please try again.",
+      "validation": {
+        "nameRequired": "Switch name is required",
+        "nameMin": "Name must be at least 3 characters",
+        "nameMax": "Name cannot exceed 100 characters",
+        "descriptionMax": "Description cannot exceed 500 characters",
+        "intervalRequired": "Check-in interval is required",
+        "intervalMin": "Interval must be at least 1 day",
+        "intervalMax": "Interval cannot exceed 365 days",
+        "gracePeriodRequired": "Grace period is required",
+        "gracePeriodMin": "Grace period must be at least 0 days",
+        "gracePeriodMax": "Grace period cannot exceed 365 days",
+        "gracePeriodTooLong": "Grace period cannot be longer than check-in interval"
+      }
+    }
   },
   "messages": {
     "title": "Messages",
     "create": "Create Message",
-    "edit": "Edit Message"
+    "edit": "Edit Message",
+    "noMessages": "No messages yet",
+    "noMessagesDescription": "Add messages that will be sent when this switch triggers",
+    "messageCount": "{{count}} message",
+    "messageCount_plural": "{{count}} messages",
+    "recipient": "Recipient",
+    "subject": "Subject"
   },
   "header": {
     "dashboard": "Dashboard",
