@@ -9,8 +9,8 @@
  * - userId: Owner user ID
  * - name: Switch name
  * - description: Optional description
- * - checkInInterval: Check-in frequency in hours
- * - gracePeriod: Grace period before triggering in hours
+ * - checkInIntervalDays: Check-in frequency in days
+ * - gracePeriodDays: Grace period before triggering in days
  * - isActive: Whether switch is active
  * - status: Current switch status (PENDING, ACTIVE, GRACE_PERIOD, TRIGGERED)
  * - lastCheckInAt: Last check-in timestamp
@@ -39,8 +39,8 @@ export const SwitchResponseDtoSchema = z.object({
   userId: z.uuid(),
   name: z.string(),
   description: z.string().optional(),
-  checkInInterval: z.number().int(),
-  gracePeriod: z.number().int(),
+  checkInIntervalDays: z.number().int(),
+  gracePeriodDays: z.number().int(),
   isActive: z.boolean(),
   status: z.nativeEnum(SwitchStatus),
   lastCheckInAt: z.date().optional(),
@@ -82,8 +82,8 @@ export function createSwitchResponseDto(switchEntity: {
   userId: string;
   name: string;
   description?: string;
-  checkInInterval: number;
-  gracePeriod: number;
+  checkInIntervalDays: number;
+  gracePeriodDays: number;
   isActive: boolean;
   status: SwitchStatus;
   lastCheckInAt?: Date;
@@ -96,8 +96,8 @@ export function createSwitchResponseDto(switchEntity: {
     userId: switchEntity.userId,
     name: switchEntity.name,
     description: switchEntity.description,
-    checkInInterval: switchEntity.checkInInterval,
-    gracePeriod: switchEntity.gracePeriod,
+    checkInIntervalDays: switchEntity.checkInIntervalDays,
+    gracePeriodDays: switchEntity.gracePeriodDays,
     isActive: switchEntity.isActive,
     status: switchEntity.status,
     lastCheckInAt: switchEntity.lastCheckInAt,

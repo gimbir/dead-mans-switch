@@ -24,6 +24,7 @@
 
 import { z } from 'zod';
 import { Result } from '@shared/types/Result.js';
+import { v7 as uuidv7 } from 'uuid';
 
 /**
  * Zod schema for validating persistence data
@@ -60,6 +61,23 @@ export interface CreateCheckInProps {
   userAgent?: string | undefined;
   location?: string | undefined;
   notes?: string | undefined;
+}
+
+/**
+ * CheckIn Persistence Data Interface
+ * Defines the exact structure for database operations
+ */
+export interface CheckInPersistenceData {
+  id: string;
+  switchId: string;
+  timestamp: Date;
+  ipAddress: string | null;
+  userAgent: string | null;
+  location: string | null;
+  notes: string | null;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class CheckIn {
@@ -127,7 +145,7 @@ export class CheckIn {
   }
 
   private static generateId(): string {
-    return `checkin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return uuidv7();
   }
 
   /**
@@ -260,18 +278,18 @@ export class CheckIn {
   /**
    * Returns a plain object representation (for database persistence)
    */
-  public toPersistence(): Record<string, unknown> {
+  public toPersistence(): CheckInPersistenceData {
     return {
       id: this._id,
       switchId: this._props.switchId,
       timestamp: this._props.timestamp,
-      ipAddress: this._props.ipAddress,
-      userAgent: this._props.userAgent,
-      location: this._props.location,
-      notes: this._props.notes,
-      version: this._props.version,
-      createdAt: this._props.createdAt,
-      updatedAt: this._props.updatedAt,
+      ipAddress: this._props.ipAddress ?? null,
+      userAgent: this._props.userAgent ?? null,
+      location: this._props.location ?? null,
+      notes: this._props.notes ?? null,
+      version: this._props.version ?? 0,
+      createdAt: this._props.createdAt ?? new Date(),
+      updatedAt: this._props.updatedAt ?? new Date(),
     };
   }
 

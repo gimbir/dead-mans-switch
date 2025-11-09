@@ -13,7 +13,7 @@
 
 import { PrismaClient, SwitchStatus as PrismaSwitchStatus } from '@generated/prisma/index.js';
 import { ISwitchRepository } from '@domain/repositories/ISwitchRepository.js';
-import { Switch, SwitchStatus } from '@domain/entities/Switch.entity.js';
+import { Switch, SwitchStatus, SwitchPersistenceData } from '@domain/entities/Switch.entity.js';
 import { Result } from '@shared/types/Result.js';
 
 export class SwitchRepository implements ISwitchRepository {
@@ -234,25 +234,25 @@ export class SwitchRepository implements ISwitchRepository {
    */
   async save(switchEntity: Switch): Promise<Result<Switch>> {
     try {
-      const persistenceData = switchEntity.toPersistence();
+      const persistenceData: SwitchPersistenceData = switchEntity.toPersistence();
 
       const createdSwitch = await this.prisma.switch.create({
         data: {
-          id: persistenceData['id'] as string,
-          userId: persistenceData['userId'] as string,
-          name: persistenceData['name'] as string,
-          description: persistenceData['description'] as string | null,
-          checkInInterval: persistenceData['checkInInterval'] as number,
-          gracePeriod: persistenceData['gracePeriod'] as number,
-          isActive: persistenceData['isActive'] as boolean,
-          status: persistenceData['status'] as PrismaSwitchStatus,
-          lastCheckIn: persistenceData['lastCheckIn'] as Date | null,
-          nextCheckInDue: persistenceData['nextCheckInDue'] as Date | null,
-          triggeredAt: persistenceData['triggeredAt'] as Date | null,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
-          version: persistenceData['version'] as number,
-          createdAt: persistenceData['createdAt'] as Date,
-          updatedAt: persistenceData['updatedAt'] as Date,
+          id: persistenceData.id,
+          userId: persistenceData.userId,
+          name: persistenceData.name,
+          description: persistenceData.description,
+          checkInIntervalDays: persistenceData.checkInIntervalDays,
+          gracePeriodDays: persistenceData.gracePeriodDays,
+          isActive: persistenceData.isActive,
+          status: persistenceData.status as PrismaSwitchStatus,
+          lastCheckIn: persistenceData.lastCheckIn,
+          nextCheckInDue: persistenceData.nextCheckInDue,
+          triggeredAt: persistenceData.triggeredAt,
+          deletedAt: persistenceData.deletedAt,
+          version: persistenceData.version,
+          createdAt: persistenceData.createdAt,
+          updatedAt: persistenceData.updatedAt,
         },
       });
 
@@ -270,26 +270,26 @@ export class SwitchRepository implements ISwitchRepository {
    */
   async update(switchEntity: Switch): Promise<Result<Switch>> {
     try {
-      const persistenceData = switchEntity.toPersistence();
-      const currentVersion = persistenceData['version'] as number;
+      const persistenceData: SwitchPersistenceData = switchEntity.toPersistence();
+      const currentVersion = persistenceData.version;
 
       const updatedSwitch = await this.prisma.switch.updateMany({
         where: {
-          id: persistenceData['id'] as string,
+          id: persistenceData.id,
           version: currentVersion - 1,
         },
         data: {
-          userId: persistenceData['userId'] as string,
-          name: persistenceData['name'] as string,
-          description: persistenceData['description'] as string | null,
-          checkInInterval: persistenceData['checkInInterval'] as number,
-          gracePeriod: persistenceData['gracePeriod'] as number,
-          isActive: persistenceData['isActive'] as boolean,
-          status: persistenceData['status'] as PrismaSwitchStatus,
-          lastCheckIn: persistenceData['lastCheckIn'] as Date | null,
-          nextCheckInDue: persistenceData['nextCheckInDue'] as Date | null,
-          triggeredAt: persistenceData['triggeredAt'] as Date | null,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
+          userId: persistenceData.userId,
+          name: persistenceData.name,
+          description: persistenceData.description,
+          checkInIntervalDays: persistenceData.checkInIntervalDays,
+          gracePeriodDays: persistenceData.gracePeriodDays,
+          isActive: persistenceData.isActive,
+          status: persistenceData.status as PrismaSwitchStatus,
+          lastCheckIn: persistenceData.lastCheckIn,
+          nextCheckInDue: persistenceData.nextCheckInDue,
+          triggeredAt: persistenceData.triggeredAt,
+          deletedAt: persistenceData.deletedAt,
           version: currentVersion,
           updatedAt: new Date(),
         },
@@ -302,7 +302,7 @@ export class SwitchRepository implements ISwitchRepository {
       }
 
       const fetchedSwitch = await this.prisma.switch.findUnique({
-        where: { id: persistenceData['id'] as string },
+        where: { id: persistenceData.id },
       });
 
       if (!fetchedSwitch) {

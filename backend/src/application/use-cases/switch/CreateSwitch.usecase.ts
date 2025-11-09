@@ -103,8 +103,8 @@ export class CreateSwitchUseCase {
       userId: switchEntity.userId,
       name: switchEntity.name,
       description: switchEntity.description ?? undefined,
-      checkInInterval: switchEntity.checkInInterval.toHours(),
-      gracePeriod: switchEntity.gracePeriod.toHours(),
+      checkInIntervalDays: switchEntity.checkInInterval.toDays(),
+      gracePeriodDays: switchEntity.gracePeriod.toDays(),
       isActive: switchEntity.isActive,
       status: switchEntity.status as any, // Map domain status to DTO status
       lastCheckInAt: switchEntity.lastCheckIn ?? undefined,

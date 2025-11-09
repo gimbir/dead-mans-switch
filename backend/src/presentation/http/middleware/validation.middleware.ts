@@ -81,7 +81,8 @@ export const validate = (schema: ValidationSchema) => {
         });
       } else {
         // Replace req.params with validated and transformed data
-        req.params = result.data as any;
+        // Use Object.assign to safely update the params object
+        Object.assign(req.params, result.data);
       }
     }
 
@@ -97,7 +98,8 @@ export const validate = (schema: ValidationSchema) => {
         });
       } else {
         // Replace req.query with validated and transformed data
-        req.query = result.data as any;
+        // Use Object.assign to safely update the query object
+        Object.assign(req.query, result.data);
       }
     }
 

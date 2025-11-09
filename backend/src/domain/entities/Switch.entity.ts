@@ -22,19 +22,21 @@
  */
 
 import { z } from 'zod';
+import { v7 as uuidv7 } from 'uuid';
 import { TimeInterval } from '@domain/value-objects/TimeInterval.vo.js';
 import { Result } from '@shared/types/Result.js';
 
 /**
  * Zod schema for validating persistence data
+ * NOTE: Field names match database column names (Prisma schema)
  */
 const SwitchPersistenceSchema = z.object({
   id: z.string().min(1),
   userId: z.string().min(1),
   name: z.string().min(1),
   description: z.string().nullable(),
-  checkInInterval: z.number().int().min(1).max(365),
-  gracePeriod: z.number().int().min(0).max(365),
+  checkInIntervalDays: z.number().int().min(1).max(365),
+  gracePeriodDays: z.number().int().min(0).max(365),
   isActive: z.boolean(),
   status: z.enum(['ACTIVE', 'PAUSED', 'TRIGGERED', 'EXPIRED']),
   lastCheckIn: z.date().nullable(),
@@ -77,6 +79,29 @@ export interface CreateSwitchProps {
   description?: string | undefined;
   checkInInterval: TimeInterval;
   gracePeriod: TimeInterval;
+}
+
+/**
+ * Switch Persistence Data Interface
+ * Defines the exact structure for database operations
+ * NOTE: Field names match Prisma schema (database column names)
+ */
+export interface SwitchPersistenceData {
+  id: string;
+  userId: string;
+  name: string;
+  description: string | null;
+  checkInIntervalDays: number;  // Maps to database column
+  gracePeriodDays: number;       // Maps to database column
+  isActive: boolean;
+  status: SwitchStatus;
+  lastCheckIn: Date | null;
+  nextCheckInDue: Date | null;
+  triggeredAt: Date | null;
+  deletedAt: Date | null;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class Switch {
@@ -152,7 +177,7 @@ export class Switch {
   }
 
   private static generateId(): string {
-    return `switch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return uuidv7();
   }
 
   // ==================== Getters ====================
@@ -267,9 +292,7 @@ export class Switch {
    */
   public checkIn(): Result<void> {
     if (!this.canCheckIn()) {
-      return Result.fail<void>(
-        'Cannot check in: Switch is either triggered, expired, or deleted'
-      );
+      return Result.fail<void>('Cannot check in: Switch is either triggered, expired, or deleted');
     }
 
     const now = new Date();
@@ -457,23 +480,23 @@ export class Switch {
   /**
    * Returns a plain object representation (for database persistence)
    */
-  public toPersistence(): Record<string, unknown> {
+  public toPersistence(): SwitchPersistenceData {
     return {
       id: this._id,
       userId: this._props.userId,
       name: this._props.name,
-      description: this._props.description,
-      checkInInterval: this._props.checkInInterval.toDays(),
-      gracePeriod: this._props.gracePeriod.toDays(),
-      isActive: this._props.isActive,
-      status: this._props.status,
-      lastCheckIn: this._props.lastCheckIn,
-      nextCheckInDue: this._props.nextCheckInDue,
-      triggeredAt: this._props.triggeredAt,
-      deletedAt: this._props.deletedAt,
-      version: this._props.version,
-      createdAt: this._props.createdAt,
-      updatedAt: this._props.updatedAt,
+      description: this._props.description ?? null,
+      checkInIntervalDays: this._props.checkInInterval.toDays(),
+      gracePeriodDays: this._props.gracePeriod.toDays(),
+      isActive: this._props.isActive ?? false,
+      status: this._props.status ?? SwitchStatus.ACTIVE,
+      lastCheckIn: this._props.lastCheckIn ?? null,
+      nextCheckInDue: this._props.nextCheckInDue ?? null,
+      triggeredAt: this._props.triggeredAt ?? null,
+      deletedAt: this._props.deletedAt ?? null,
+      version: this._props.version ?? 0,
+      createdAt: this._props.createdAt ?? new Date(),
+      updatedAt: this._props.updatedAt ?? new Date(),
     };
   }
 
@@ -493,13 +516,13 @@ export class Switch {
 
     const validData = validationResult.data;
 
-    // Create TimeInterval value objects
-    const checkInIntervalOrError = TimeInterval.create(validData.checkInInterval);
+    // Create TimeInterval value objects from database column values
+    const checkInIntervalOrError = TimeInterval.create(validData.checkInIntervalDays);
     if (checkInIntervalOrError.isFailure) {
       return Result.fail<Switch>(checkInIntervalOrError.error as string);
     }
 
-    const gracePeriodOrError = TimeInterval.create(validData.gracePeriod);
+    const gracePeriodOrError = TimeInterval.create(validData.gracePeriodDays);
     if (gracePeriodOrError.isFailure) {
       return Result.fail<Switch>(gracePeriodOrError.error as string);
     }

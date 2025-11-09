@@ -26,6 +26,7 @@
 import { z } from 'zod';
 import { Email } from '@domain/value-objects/Email.vo.js';
 import { Result } from '@shared/types/Result.js';
+import { v7 as uuidv7 } from 'uuid';
 
 /**
  * Zod schema for validating persistence data
@@ -74,6 +75,29 @@ export interface CreateMessageProps {
   recipientName: string;
   subject?: string | undefined;
   encryptedContent: string;
+}
+
+/**
+ * Message Persistence Data Interface
+ * Defines the exact structure for database operations
+ */
+export interface MessagePersistenceData {
+  id: string;
+  switchId: string;
+  recipientEmail: string;
+  recipientName: string;
+  subject: string | null;
+  encryptedContent: string;
+  isSent: boolean;
+  sentAt: Date | null;
+  deliveryAttempts: number;
+  lastAttemptAt: Date | null;
+  failureReason: string | null;
+  idempotencyKey: string;
+  deletedAt: Date | null;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class Message {
@@ -150,7 +174,7 @@ export class Message {
   }
 
   private static generateId(): string {
-    return `message_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return uuidv7();
   }
 
   private static generateIdempotencyKey(messageId: string): string {
@@ -369,24 +393,24 @@ export class Message {
   /**
    * Returns a plain object representation (for database persistence)
    */
-  public toPersistence(): Record<string, unknown> {
+  public toPersistence(): MessagePersistenceData {
     return {
       id: this._id,
       switchId: this._props.switchId,
       recipientEmail: this._props.recipientEmail.getValue(),
       recipientName: this._props.recipientName,
-      subject: this._props.subject,
+      subject: this._props.subject ?? null,
       encryptedContent: this._props.encryptedContent,
-      isSent: this._props.isSent,
-      sentAt: this._props.sentAt,
-      deliveryAttempts: this._props.deliveryAttempts,
-      lastAttemptAt: this._props.lastAttemptAt,
-      failureReason: this._props.failureReason,
-      idempotencyKey: this._props.idempotencyKey,
-      deletedAt: this._props.deletedAt,
-      version: this._props.version,
-      createdAt: this._props.createdAt,
-      updatedAt: this._props.updatedAt,
+      isSent: this._props.isSent ?? false,
+      sentAt: this._props.sentAt ?? null,
+      deliveryAttempts: this._props.deliveryAttempts ?? 0,
+      lastAttemptAt: this._props.lastAttemptAt ?? null,
+      failureReason: this._props.failureReason ?? null,
+      idempotencyKey: this._props.idempotencyKey ?? '',
+      deletedAt: this._props.deletedAt ?? null,
+      version: this._props.version ?? 0,
+      createdAt: this._props.createdAt ?? new Date(),
+      updatedAt: this._props.updatedAt ?? new Date(),
     };
   }
 

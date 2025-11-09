@@ -16,7 +16,7 @@
 
 import { PrismaClient } from '@generated/prisma/index.js';
 import { IMessageRepository } from '@domain/repositories/IMessageRepository.js';
-import { Message } from '@domain/entities/Message.entity.js';
+import { Message, MessagePersistenceData } from '@domain/entities/Message.entity.js';
 import { Result } from '@shared/types/Result.js';
 
 export class MessageRepository implements IMessageRepository {
@@ -218,26 +218,26 @@ export class MessageRepository implements IMessageRepository {
    */
   async save(message: Message): Promise<Result<Message>> {
     try {
-      const persistenceData = message.toPersistence();
+      const persistenceData: MessagePersistenceData = message.toPersistence();
 
       const createdMessage = await this.prisma.message.create({
         data: {
-          id: persistenceData['id'] as string,
-          switchId: persistenceData['switchId'] as string,
-          recipientEmail: persistenceData['recipientEmail'] as string,
-          recipientName: persistenceData['recipientName'] as string,
-          subject: persistenceData['subject'] as string | null,
-          encryptedContent: persistenceData['encryptedContent'] as string,
-          isSent: persistenceData['isSent'] as boolean,
-          sentAt: persistenceData['sentAt'] as Date | null,
-          deliveryAttempts: persistenceData['deliveryAttempts'] as number,
-          lastAttemptAt: persistenceData['lastAttemptAt'] as Date | null,
-          failureReason: persistenceData['failureReason'] as string | null,
-          idempotencyKey: persistenceData['idempotencyKey'] as string,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
-          version: persistenceData['version'] as number,
-          createdAt: persistenceData['createdAt'] as Date,
-          updatedAt: persistenceData['updatedAt'] as Date,
+          id: persistenceData.id,
+          switchId: persistenceData.switchId,
+          recipientEmail: persistenceData.recipientEmail,
+          recipientName: persistenceData.recipientName,
+          subject: persistenceData.subject,
+          encryptedContent: persistenceData.encryptedContent,
+          isSent: persistenceData.isSent,
+          sentAt: persistenceData.sentAt,
+          deliveryAttempts: persistenceData.deliveryAttempts,
+          lastAttemptAt: persistenceData.lastAttemptAt,
+          failureReason: persistenceData.failureReason,
+          idempotencyKey: persistenceData.idempotencyKey,
+          deletedAt: persistenceData.deletedAt,
+          version: persistenceData.version,
+          createdAt: persistenceData.createdAt,
+          updatedAt: persistenceData.updatedAt,
         },
       });
 
@@ -255,26 +255,26 @@ export class MessageRepository implements IMessageRepository {
    */
   async update(message: Message): Promise<Result<Message>> {
     try {
-      const persistenceData = message.toPersistence();
-      const currentVersion = persistenceData['version'] as number;
+      const persistenceData: MessagePersistenceData = message.toPersistence();
+      const currentVersion = persistenceData.version;
 
       // Optimistic locking: check version before update
       const updatedMessage = await this.prisma.message.updateMany({
         where: {
-          id: persistenceData['id'] as string,
+          id: persistenceData.id,
           version: currentVersion - 1, // Previous version
         },
         data: {
-          recipientEmail: persistenceData['recipientEmail'] as string,
-          recipientName: persistenceData['recipientName'] as string,
-          subject: persistenceData['subject'] as string | null,
-          encryptedContent: persistenceData['encryptedContent'] as string,
-          isSent: persistenceData['isSent'] as boolean,
-          sentAt: persistenceData['sentAt'] as Date | null,
-          deliveryAttempts: persistenceData['deliveryAttempts'] as number,
-          lastAttemptAt: persistenceData['lastAttemptAt'] as Date | null,
-          failureReason: persistenceData['failureReason'] as string | null,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
+          recipientEmail: persistenceData.recipientEmail,
+          recipientName: persistenceData.recipientName,
+          subject: persistenceData.subject,
+          encryptedContent: persistenceData.encryptedContent,
+          isSent: persistenceData.isSent,
+          sentAt: persistenceData.sentAt,
+          deliveryAttempts: persistenceData.deliveryAttempts,
+          lastAttemptAt: persistenceData.lastAttemptAt,
+          failureReason: persistenceData.failureReason,
+          deletedAt: persistenceData.deletedAt,
           version: currentVersion,
           updatedAt: new Date(),
         },
@@ -289,7 +289,7 @@ export class MessageRepository implements IMessageRepository {
 
       // Fetch and return updated message
       const fetchedMessage = await this.prisma.message.findUnique({
-        where: { id: persistenceData['id'] as string },
+        where: { id: persistenceData.id },
       });
 
       if (!fetchedMessage) {

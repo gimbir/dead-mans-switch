@@ -14,7 +14,7 @@
 
 import { PrismaClient } from '@generated/prisma/index.js';
 import { IUserRepository } from '@domain/repositories/IUserRepository.js';
-import { User } from '@domain/entities/User.entity.js';
+import { User, UserPersistenceData } from '@domain/entities/User.entity.js';
 import { Email } from '@domain/value-objects/Email.vo.js';
 import { Result } from '@shared/types/Result.js';
 
@@ -150,21 +150,21 @@ export class UserRepository implements IUserRepository {
    */
   async save(user: User): Promise<Result<User>> {
     try {
-      const persistenceData = user.toPersistence();
+      const persistenceData: UserPersistenceData = user.toPersistence();
 
       const createdUser = await this.prisma.user.create({
         data: {
-          id: persistenceData['id'] as string,
-          email: persistenceData['email'] as string,
-          password: persistenceData['password'] as string,
-          name: persistenceData['name'] as string,
-          isVerified: persistenceData['isVerified'] as boolean,
-          verificationToken: persistenceData['verificationToken'] as string | null,
-          refreshToken: persistenceData['refreshToken'] as string | null,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
-          version: persistenceData['version'] as number,
-          createdAt: persistenceData['createdAt'] as Date,
-          updatedAt: persistenceData['updatedAt'] as Date,
+          id: persistenceData.id,
+          email: persistenceData.email,
+          password: persistenceData.password,
+          name: persistenceData.name,
+          isVerified: persistenceData.isVerified,
+          verificationToken: persistenceData.verificationToken,
+          refreshToken: persistenceData.refreshToken,
+          deletedAt: persistenceData.deletedAt,
+          version: persistenceData.version,
+          createdAt: persistenceData.createdAt,
+          updatedAt: persistenceData.updatedAt,
         },
       });
 
@@ -182,23 +182,23 @@ export class UserRepository implements IUserRepository {
    */
   async update(user: User): Promise<Result<User>> {
     try {
-      const persistenceData = user.toPersistence();
-      const currentVersion = persistenceData['version'] as number;
+      const persistenceData: UserPersistenceData = user.toPersistence();
+      const currentVersion = persistenceData.version;
 
       // Optimistic locking: check version before update
       const updatedUser = await this.prisma.user.updateMany({
         where: {
-          id: persistenceData['id'] as string,
+          id: persistenceData.id,
           version: currentVersion - 1, // Previous version
         },
         data: {
-          email: persistenceData['email'] as string,
-          password: persistenceData['password'] as string,
-          name: persistenceData['name'] as string,
-          isVerified: persistenceData['isVerified'] as boolean,
-          verificationToken: persistenceData['verificationToken'] as string | null,
-          refreshToken: persistenceData['refreshToken'] as string | null,
-          deletedAt: persistenceData['deletedAt'] as Date | null,
+          email: persistenceData.email,
+          password: persistenceData.password,
+          name: persistenceData.name,
+          isVerified: persistenceData.isVerified,
+          verificationToken: persistenceData.verificationToken,
+          refreshToken: persistenceData.refreshToken,
+          deletedAt: persistenceData.deletedAt,
           version: currentVersion,
           updatedAt: new Date(),
         },
@@ -213,7 +213,7 @@ export class UserRepository implements IUserRepository {
 
       // Fetch and return updated user
       const fetchedUser = await this.prisma.user.findUnique({
-        where: { id: persistenceData['id'] as string },
+        where: { id: persistenceData.id },
       });
 
       if (!fetchedUser) {

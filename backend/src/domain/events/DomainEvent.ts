@@ -17,6 +17,8 @@
  * - Support eventual consistency
  */
 
+import { v7 as uuidv7 } from 'uuid';
+
 export interface DomainEvent {
   /**
    * Unique identifier for this event instance
@@ -62,6 +64,6 @@ export abstract class BaseDomainEvent implements DomainEvent {
   }
 
   private generateEventId(): string {
-    return `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return uuidv7();
   }
 }

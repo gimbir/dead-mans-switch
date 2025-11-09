@@ -61,8 +61,8 @@ model Switch {
   description       String?
 
   // Check-in configuration
-  checkInInterval   Int         // in days
-  gracePeriod       Int         @default(0) // in days
+  checkInIntervalDays   Int         // in days
+  gracePeriodDays       Int         @default(0) // in days
 
   // Status tracking
   isActive          Boolean     @default(true)

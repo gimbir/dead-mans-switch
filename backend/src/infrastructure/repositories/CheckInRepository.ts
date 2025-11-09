@@ -15,7 +15,7 @@
 
 import { PrismaClient } from '@generated/prisma/index.js';
 import { ICheckInRepository } from '@domain/repositories/ICheckInRepository.js';
-import { CheckIn } from '@domain/entities/CheckIn.entity.js';
+import { CheckIn, CheckInPersistenceData } from '@domain/entities/CheckIn.entity.js';
 import { Result } from '@shared/types/Result.js';
 
 export class CheckInRepository implements ICheckInRepository {
@@ -265,20 +265,20 @@ export class CheckInRepository implements ICheckInRepository {
    */
   async save(checkIn: CheckIn): Promise<Result<CheckIn>> {
     try {
-      const persistenceData = checkIn.toPersistence();
+      const persistenceData: CheckInPersistenceData = checkIn.toPersistence();
 
       const createdCheckIn = await this.prisma.checkIn.create({
         data: {
-          id: persistenceData['id'] as string,
-          switchId: persistenceData['switchId'] as string,
-          timestamp: persistenceData['timestamp'] as Date,
-          ipAddress: persistenceData['ipAddress'] as string | null,
-          userAgent: persistenceData['userAgent'] as string | null,
-          location: persistenceData['location'] as string | null,
-          notes: persistenceData['notes'] as string | null,
-          version: persistenceData['version'] as number,
-          createdAt: persistenceData['createdAt'] as Date,
-          updatedAt: persistenceData['updatedAt'] as Date,
+          id: persistenceData.id,
+          switchId: persistenceData.switchId,
+          timestamp: persistenceData.timestamp,
+          ipAddress: persistenceData.ipAddress,
+          userAgent: persistenceData.userAgent,
+          location: persistenceData.location,
+          notes: persistenceData.notes,
+          version: persistenceData.version,
+          createdAt: persistenceData.createdAt,
+          updatedAt: persistenceData.updatedAt,
         },
       });
 
@@ -297,17 +297,17 @@ export class CheckInRepository implements ICheckInRepository {
    */
   async update(checkIn: CheckIn): Promise<Result<CheckIn>> {
     try {
-      const persistenceData = checkIn.toPersistence();
-      const currentVersion = persistenceData['version'] as number;
+      const persistenceData: CheckInPersistenceData = checkIn.toPersistence();
+      const currentVersion = persistenceData.version;
 
       // Optimistic locking: check version before update
       const updatedCheckIn = await this.prisma.checkIn.updateMany({
         where: {
-          id: persistenceData['id'] as string,
+          id: persistenceData.id,
           version: currentVersion - 1, // Previous version
         },
         data: {
-          notes: persistenceData['notes'] as string | null,
+          notes: persistenceData.notes,
           version: currentVersion,
           updatedAt: new Date(),
         },
@@ -322,7 +322,7 @@ export class CheckInRepository implements ICheckInRepository {
 
       // Fetch and return updated check-in
       const fetchedCheckIn = await this.prisma.checkIn.findUnique({
-        where: { id: persistenceData['id'] as string },
+        where: { id: persistenceData.id },
       });
 
       if (!fetchedCheckIn) {

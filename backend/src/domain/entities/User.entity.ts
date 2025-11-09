@@ -21,6 +21,7 @@
 import { z } from 'zod';
 import { Email } from '@domain/value-objects/Email.vo.js';
 import { Result } from '@shared/types/Result.js';
+import { v7 as uuidv7 } from 'uuid';
 
 /**
  * Zod schema for validating persistence data
@@ -65,6 +66,26 @@ export interface CreateUserProps {
   isVerified?: boolean;
   verificationToken?: string | null;
   refreshToken?: string | null;
+}
+
+/**
+ * User Persistence Data Interface
+ * Defines the exact structure for database operations
+ */
+export interface UserPersistenceData {
+  id: string;
+  email: string;
+  name: string;
+  password: string;
+  isVerified: boolean;
+  verificationToken: string | null;
+  passwordResetToken: string | null;
+  passwordResetExpiry: Date | null;
+  refreshToken: string | null;
+  deletedAt: Date | null;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class User {
@@ -128,7 +149,7 @@ export class User {
    * In production, this should use a proper UUID library
    */
   private static generateId(): string {
-    return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return uuidv7();
   }
 
   // ==================== Getters ====================
@@ -365,21 +386,21 @@ export class User {
   /**
    * Returns a plain object representation (for database persistence)
    */
-  public toPersistence(): Record<string, unknown> {
+  public toPersistence(): UserPersistenceData {
     return {
       id: this._id,
       email: this._props.email.getValue(),
       name: this._props.name,
       password: this._props.hashedPassword,
-      isVerified: this._props.isVerified,
-      verificationToken: this._props.verificationToken,
-      passwordResetToken: this._props.passwordResetToken,
-      passwordResetExpiry: this._props.passwordResetExpiry,
-      refreshToken: this._props.refreshToken,
-      deletedAt: this._props.deletedAt,
-      version: this._props.version,
-      createdAt: this._props.createdAt,
-      updatedAt: this._props.updatedAt,
+      isVerified: this._props.isVerified ?? false,
+      verificationToken: this._props.verificationToken ?? null,
+      passwordResetToken: this._props.passwordResetToken ?? null,
+      passwordResetExpiry: this._props.passwordResetExpiry ?? null,
+      refreshToken: this._props.refreshToken ?? null,
+      deletedAt: this._props.deletedAt ?? null,
+      version: this._props.version ?? 0,
+      createdAt: this._props.createdAt ?? new Date(),
+      updatedAt: this._props.updatedAt ?? new Date(),
     };
   }
 
