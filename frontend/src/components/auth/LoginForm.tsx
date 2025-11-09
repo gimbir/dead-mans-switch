@@ -26,15 +26,12 @@ export const LoginForm = () => {
 
   // Create schema with translated validation messages
   const loginSchema = z.object({
-    email: z
-      .string()
-      .min(1, t('auth.validation.emailRequired'))
-      .email(t('auth.validation.emailInvalid')),
+    email: z.email(t('auth.validation.emailInvalid')).min(1, t('auth.validation.emailRequired')),
     password: z
       .string()
       .min(1, t('auth.validation.passwordRequired'))
       .min(8, t('auth.validation.passwordMin')),
-    rememberMe: z.boolean().optional(),
+    rememberMe: z.boolean().optional()
   });
 
   type LoginFormData = z.infer<typeof loginSchema>;
@@ -42,10 +39,10 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    mode: 'onBlur',
+    mode: 'onBlur'
   });
 
   const onSubmit = async (data: LoginFormData) => {
@@ -60,17 +57,23 @@ export const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-      <div className="space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className='mt-8 space-y-6'
+    >
+      <div className='space-y-4'>
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='email'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.login.email')}
           </label>
           <input
-            id="email"
-            type="email"
-            autoComplete="email"
+            id='email'
+            type='email'
+            autoComplete='email'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.email
@@ -80,20 +83,21 @@ export const LoginForm = () => {
             placeholder={t('auth.login.emailPlaceholder')}
             {...register('email')}
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
+          {errors.email && <p className='mt-1 text-sm text-red-600'>{errors.email.message}</p>}
         </div>
 
         {/* Password Field */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='password'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.login.password')}
           </label>
           <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
+            id='password'
+            type='password'
+            autoComplete='current-password'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.password
@@ -104,30 +108,33 @@ export const LoginForm = () => {
             {...register('password')}
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+            <p className='mt-1 text-sm text-red-600'>{errors.password.message}</p>
           )}
         </div>
       </div>
 
       {/* Remember Me & Forgot Password */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center'>
           <input
-            id="remember-me"
-            type="checkbox"
+            id='remember-me'
+            type='checkbox'
             disabled={isLoading}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-theme-primary rounded disabled:cursor-not-allowed"
+            className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-theme-primary rounded disabled:cursor-not-allowed'
             {...register('rememberMe')}
           />
-          <label htmlFor="remember-me" className="ml-2 block text-sm text-theme-primary">
+          <label
+            htmlFor='remember-me'
+            className='ml-2 block text-sm text-theme-primary'
+          >
             {t('auth.login.rememberMe')}
           </label>
         </div>
 
-        <div className="text-sm">
+        <div className='text-sm'>
           <a
-            href="#"
-            className="font-medium text-brand-primary hover:opacity-80"
+            href='#'
+            className='font-medium text-brand-primary hover:opacity-80'
             onClick={(e) => {
               e.preventDefault();
               toast(t('toast.passwordResetSoon'), { icon: '🔐' });
@@ -141,32 +148,32 @@ export const LoginForm = () => {
       {/* Submit Button */}
       <div>
         <button
-          type="submit"
+          type='submit'
           disabled={isLoading}
           className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-theme-inverse focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-brand-primary ${
             isLoading ? 'opacity-60 cursor-not-allowed' : 'hover:opacity-90'
           }`}
         >
           {isLoading ? (
-            <span className="flex items-center">
+            <span className='flex items-center'>
               <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-theme-inverse"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
+                className='animate-spin -ml-1 mr-3 h-5 w-5 text-theme-inverse'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
               >
                 <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
                 />
                 <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
                 />
               </svg>
               {t('auth.login.signingIn')}
@@ -178,10 +185,13 @@ export const LoginForm = () => {
       </div>
 
       {/* Register Link */}
-      <div className="text-center">
-        <p className="text-sm text-theme-secondary">
+      <div className='text-center'>
+        <p className='text-sm text-theme-secondary'>
           {t('auth.login.noAccount')}{' '}
-          <Link to="/register" className="font-medium text-brand-primary hover:opacity-80">
+          <Link
+            to='/register'
+            className='font-medium text-brand-primary hover:opacity-80'
+          >
             {t('auth.login.signUpNow')}
           </Link>
         </p>

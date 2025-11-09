@@ -34,19 +34,13 @@ export const RegisterForm = () => {
         .min(1, t('auth.validation.nameRequired'))
         .min(2, t('auth.validation.nameMin'))
         .max(50, t('auth.validation.nameMax')),
-      email: z
-        .string()
-        .min(1, t('auth.validation.emailRequired'))
-        .email(t('auth.validation.emailInvalid')),
+      email: z.email(t('auth.validation.emailInvalid')).min(1, t('auth.validation.emailRequired')),
       password: z
         .string()
         .min(1, t('auth.validation.passwordRequired'))
         .min(8, t('auth.validation.passwordMin'))
         .max(72, t('auth.validation.passwordMax'))
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-          t('auth.validation.passwordStrength')
-        ),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, t('auth.validation.passwordStrength')),
       confirmPassword: z.string().min(1, t('auth.validation.confirmPasswordRequired'))
     })
     .refine((data) => data.password === data.confirmPassword, {
@@ -80,9 +74,12 @@ export const RegisterForm = () => {
     if (/\d/.test(pwd)) strength++;
     if (/[^A-Za-z0-9]/.test(pwd)) strength++;
 
-    if (strength <= 2) return { level: 1, text: t('auth.register.strengthWeak'), color: 'bg-red-500' };
-    if (strength === 3) return { level: 2, text: t('auth.register.strengthMedium'), color: 'bg-yellow-500' };
-    if (strength === 4) return { level: 3, text: t('auth.register.strengthStrong'), color: 'bg-green-500' };
+    if (strength <= 2)
+      return { level: 1, text: t('auth.register.strengthWeak'), color: 'bg-red-500' };
+    if (strength === 3)
+      return { level: 2, text: t('auth.register.strengthMedium'), color: 'bg-yellow-500' };
+    if (strength === 4)
+      return { level: 3, text: t('auth.register.strengthStrong'), color: 'bg-green-500' };
     return { level: 4, text: t('auth.register.strengthVeryStrong'), color: 'bg-green-600' };
   };
 
@@ -100,17 +97,23 @@ export const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-      <div className="space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className='mt-8 space-y-6'
+    >
+      <div className='space-y-4'>
         {/* Name Field */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='name'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.register.name')}
           </label>
           <input
-            id="name"
-            type="text"
-            autoComplete="name"
+            id='name'
+            type='text'
+            autoComplete='name'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.name
@@ -120,20 +123,21 @@ export const RegisterForm = () => {
             placeholder={t('auth.register.namePlaceholder')}
             {...register('name')}
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
+          {errors.name && <p className='mt-1 text-sm text-red-600'>{errors.name.message}</p>}
         </div>
 
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='email'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.register.email')}
           </label>
           <input
-            id="email"
-            type="email"
-            autoComplete="email"
+            id='email'
+            type='email'
+            autoComplete='email'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.email
@@ -143,20 +147,21 @@ export const RegisterForm = () => {
             placeholder={t('auth.register.emailPlaceholder')}
             {...register('email')}
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
+          {errors.email && <p className='mt-1 text-sm text-red-600'>{errors.email.message}</p>}
         </div>
 
         {/* Password Field */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='password'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.register.password')}
           </label>
           <input
-            id="password"
-            type="password"
-            autoComplete="new-password"
+            id='password'
+            type='password'
+            autoComplete='new-password'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.password
@@ -167,21 +172,21 @@ export const RegisterForm = () => {
             {...register('password')}
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+            <p className='mt-1 text-sm text-red-600'>{errors.password.message}</p>
           )}
 
           {/* Password Strength Indicator */}
           {password && passwordStrength.level > 0 && (
-            <div className="mt-2">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-theme-secondary">
+            <div className='mt-2'>
+              <div className='flex justify-between items-center mb-1'>
+                <span className='text-xs text-theme-secondary'>
                   {t('auth.register.passwordStrength')}
                 </span>
-                <span className="text-xs font-medium text-theme-primary">
+                <span className='text-xs font-medium text-theme-primary'>
                   {passwordStrength.text}
                 </span>
               </div>
-              <div className="w-full h-2 bg-theme-hover rounded-full overflow-hidden">
+              <div className='w-full h-2 bg-theme-hover rounded-full overflow-hidden'>
                 <div
                   className={`h-full ${passwordStrength.color} transition-all duration-300`}
                   style={{ width: `${(passwordStrength.level / 4) * 100}%` }}
@@ -191,11 +196,11 @@ export const RegisterForm = () => {
           )}
 
           {/* Password Requirements */}
-          <div className="mt-2">
-            <p className="text-xs text-theme-secondary">
+          <div className='mt-2'>
+            <p className='text-xs text-theme-secondary'>
               {t('auth.register.passwordRequirements')}
             </p>
-            <ul className="mt-1 space-y-0.5 text-xs text-theme-secondary">
+            <ul className='mt-1 space-y-0.5 text-xs text-theme-secondary'>
               <li className={password && password.length >= 8 ? 'text-green-600' : ''}>
                 • {t('auth.register.requirement1')}
               </li>
@@ -217,13 +222,16 @@ export const RegisterForm = () => {
 
         {/* Confirm Password Field */}
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-theme-primary">
+          <label
+            htmlFor='confirmPassword'
+            className='block text-sm font-medium text-theme-primary'
+          >
             {t('auth.register.confirmPassword')}
           </label>
           <input
-            id="confirmPassword"
-            type="password"
-            autoComplete="new-password"
+            id='confirmPassword'
+            type='password'
+            autoComplete='new-password'
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.confirmPassword
@@ -234,33 +242,36 @@ export const RegisterForm = () => {
             {...register('confirmPassword')}
           />
           {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+            <p className='mt-1 text-sm text-red-600'>{errors.confirmPassword.message}</p>
           )}
         </div>
       </div>
 
       {/* Terms of Service */}
-      <div className="flex items-start">
+      <div className='flex items-start'>
         <input
-          id="terms"
-          name="terms"
-          type="checkbox"
+          id='terms'
+          name='terms'
+          type='checkbox'
           required
           disabled={isLoading}
-          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-theme-primary rounded disabled:cursor-not-allowed mt-0.5"
+          className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-theme-primary rounded disabled:cursor-not-allowed mt-0.5'
         />
-        <label htmlFor="terms" className="ml-2 block text-sm text-theme-primary">
+        <label
+          htmlFor='terms'
+          className='ml-2 block text-sm text-theme-primary'
+        >
           {t('auth.register.terms')}{' '}
           <a
-            href="#"
-            className="font-medium text-brand-primary hover:opacity-80"
+            href='#'
+            className='font-medium text-brand-primary hover:opacity-80'
           >
             {t('auth.register.termsOfService')}
           </a>{' '}
           {t('auth.register.and')}{' '}
           <a
-            href="#"
-            className="font-medium text-brand-primary hover:opacity-80"
+            href='#'
+            className='font-medium text-brand-primary hover:opacity-80'
           >
             {t('auth.register.privacyPolicy')}
           </a>
@@ -270,32 +281,32 @@ export const RegisterForm = () => {
       {/* Submit Button */}
       <div>
         <button
-          type="submit"
+          type='submit'
           disabled={isLoading}
           className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-theme-inverse focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-brand-primary ${
             isLoading ? 'opacity-60 cursor-not-allowed' : 'hover:opacity-90'
           }`}
         >
           {isLoading ? (
-            <span className="flex items-center">
+            <span className='flex items-center'>
               <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-theme-inverse"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
+                className='animate-spin -ml-1 mr-3 h-5 w-5 text-theme-inverse'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
               >
                 <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
                 />
                 <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
                 />
               </svg>
               {t('auth.register.creatingAccount')}
@@ -307,10 +318,13 @@ export const RegisterForm = () => {
       </div>
 
       {/* Login Link */}
-      <div className="text-center">
-        <p className="text-sm text-theme-secondary">
+      <div className='text-center'>
+        <p className='text-sm text-theme-secondary'>
           {t('auth.register.hasAccount')}{' '}
-          <Link to="/login" className="font-medium text-brand-primary hover:opacity-80">
+          <Link
+            to='/login'
+            className='font-medium text-brand-primary hover:opacity-80'
+          >
             {t('auth.register.signIn')}
           </Link>
         </p>

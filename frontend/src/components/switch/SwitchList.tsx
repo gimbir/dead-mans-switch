@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Power } from 'lucide-react';
 import type { Switch, PaginatedResponse } from '@/types';
 import { SwitchCard } from './SwitchCard';
+import { CardSkeleton } from '@/components/common/LoadingSkeleton';
 
 interface SwitchListProps {
   data?: PaginatedResponse<Switch>;
@@ -40,20 +41,7 @@ export const SwitchList = ({
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="bg-theme-card border border-theme-primary rounded-lg p-6 animate-pulse"
-            >
-              <div className="h-6 bg-theme-secondary rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-theme-secondary rounded w-full mb-2"></div>
-              <div className="h-4 bg-theme-secondary rounded w-2/3 mb-4"></div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-12 bg-theme-secondary rounded"></div>
-                <div className="h-12 bg-theme-secondary rounded"></div>
-              </div>
-            </div>
-          ))}
+          <CardSkeleton count={6} />
         </div>
       </div>
     );

@@ -1,7 +1,8 @@
 {
   "common": {
-    "appName": "Dead Man's Switch",
-    "tagline": "Secure Message Delivery",
+    "appName": "If I Should Die Before I Wake",
+    "appNameShort": "IISDBW",
+    "tagline": "Secure Message Delivery When It Matters Most",
     "loading": "Loading...",
     "submit": "Submit",
     "cancel": "Cancel",
@@ -14,7 +15,10 @@
     "next": "Next",
     "previous": "Previous",
     "showing": "Showing",
-    "of": "of"
+    "of": "of",
+    "optional": "Optional",
+    "unknown": "Unknown",
+    "pageInfo": "Page {{current}} of {{total}}"
   },
   "auth": {
     "login": {
@@ -135,6 +139,10 @@
       "everyHour": "Every {{count}} hour",
       "everyHour_plural": "Every {{count}} hours"
     },
+    "detail": {
+      "infoCardTitle": "About This Switch",
+      "infoCardDescription": "This switch will trigger if you don't check in within {{totalDays}} days. Make sure to add messages that will be sent when triggered."
+    },
     "form": {
       "name": "Switch Name",
       "namePlaceholder": "e.g., Emergency Contacts",
@@ -178,7 +186,69 @@
     "messageCount": "{{count}} message",
     "messageCount_plural": "{{count}} messages",
     "recipient": "Recipient",
-    "subject": "Subject"
+    "subject": "Subject",
+    "created": "Created",
+    "sentAt": "Sent at",
+    "confirmDelete": "Are you sure you want to delete the message for {{name}}?",
+    "form": {
+      "recipientEmail": "Recipient Email",
+      "recipientEmailPlaceholder": "recipient@example.com",
+      "recipientName": "Recipient Name",
+      "recipientNamePlaceholder": "John Doe",
+      "subject": "Subject",
+      "subjectPlaceholder": "Important Message",
+      "content": "Message Content",
+      "contentPlaceholder": "Write your message here...",
+      "encryptionNote": "Your message will be encrypted before storage for security.",
+      "create": "Create Message",
+      "update": "Update Message",
+      "validation": {
+        "emailRequired": "Recipient email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "nameRequired": "Recipient name is required",
+        "nameMin": "Recipient name must be at least 2 characters",
+        "nameMax": "Recipient name must not exceed 100 characters",
+        "subjectMax": "Subject must not exceed 200 characters",
+        "contentRequired": "Message content is required",
+        "contentMin": "Message content must be at least 10 characters",
+        "contentMax": "Message content must not exceed 5000 characters"
+      }
+    },
+    "status": {
+      "sent": "Sent",
+      "pending": "Pending",
+      "failed": "Failed"
+    },
+    "actions": {
+      "preview": "Preview",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "preview": {
+      "title": "Message Preview",
+      "recipient": "Recipient Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "created": "Created On",
+      "content": "Message Content",
+      "noContent": "No content available",
+      "encryptionNote": "Note: Content is stored encrypted. This is the original text.",
+      "deliveryInfo": "Delivery Information",
+      "attempts": "Delivery Attempts",
+      "lastAttempt": "Last Attempt",
+      "failureReason": "Failure Reason"
+    },
+    "success": {
+      "created": "Message created successfully!",
+      "updated": "Message updated successfully!",
+      "deleted": "Message deleted successfully!"
+    },
+    "errors": {
+      "fetchFailed": "Failed to load messages",
+      "createFailed": "Failed to create message",
+      "updateFailed": "Failed to update message",
+      "deleteFailed": "Failed to delete message"
+    }
   },
   "header": {
     "dashboard": "Dashboard",
@@ -187,7 +257,72 @@
     "login": "Login",
     "signUp": "Sign Up"
   },
+  "footer": {
+    "copyright": "© {{year}} All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "documentation": "Documentation",
+    "contact": "Contact",
+    "description": "Secure message delivery system that automatically sends pre-configured messages if you fail to check in within a specified timeframe."
+  },
   "toast": {
     "passwordResetSoon": "Password reset feature coming soon!"
+  },
+  "home": {
+    "badge": "Secure Digital Legacy Protection",
+    "hero": {
+      "title": "If I Should Die Before I Wake",
+      "subtitle": "A Dead Man's Switch for Your Digital Life",
+      "description": "Automatically send encrypted messages to loved ones if you fail to check in. Ensure your important information reaches the right people when it matters most."
+    },
+    "cta": {
+      "getStarted": "Get Started Free",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose Our Service?",
+      "subtitle": "Peace of mind with enterprise-grade security and automation",
+      "items": {
+        "automated": {
+          "title": "Automated Monitoring",
+          "description": "Set your check-in schedule and we'll monitor it 24/7. If you miss a check-in, we'll automatically take action."
+        },
+        "encrypted": {
+          "title": "Bank-Grade Encryption",
+          "description": "Your messages are encrypted with AES-256-GCM. Only intended recipients can decrypt and read them."
+        },
+        "flexible": {
+          "title": "Flexible Check-ins",
+          "description": "Choose your own schedule from daily to yearly. Set grace periods for added flexibility."
+        },
+        "peace": {
+          "title": "Peace of Mind",
+          "description": "Rest easy knowing your important information will reach loved ones when they need it most."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Simple setup, powerful protection in three easy steps",
+      "steps": {
+        "create": {
+          "title": "Create Your Switch",
+          "description": "Set up encrypted messages for your loved ones and configure your check-in schedule."
+        },
+        "checkin": {
+          "title": "Regular Check-ins",
+          "description": "Simply check in at your chosen intervals. It takes just one click to confirm you're okay."
+        },
+        "relax": {
+          "title": "Relax & Live",
+          "description": "We'll handle the rest. If you miss a check-in, your messages are automatically delivered."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to Protect Your Digital Legacy?",
+      "subtitle": "Join thousands who have secured their important information. Start your free account today.",
+      "button": "Create Free Account"
+    }
   }
 }

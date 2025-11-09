@@ -1,7 +1,8 @@
 {
   "common": {
-    "appName": "Ölü Adam Anahtarı",
-    "tagline": "Güvenli Mesaj İletimi",
+    "appName": "Uyanmadan Önce Ölürsem",
+    "appNameShort": "UÖÖ",
+    "tagline": "En Çok İhtiyaç Duyulduğunda Güvenli Mesaj İletimi",
     "loading": "Yükleniyor...",
     "submit": "Gönder",
     "cancel": "İptal",
@@ -14,7 +15,10 @@
     "next": "İleri",
     "previous": "Önceki",
     "showing": "Gösterilen",
-    "of": "/"
+    "of": "/",
+    "optional": "İsteğe Bağlı",
+    "unknown": "Bilinmiyor",
+    "pageInfo": "Sayfa {{current}} / {{total}}"
   },
   "auth": {
     "login": {
@@ -135,6 +139,10 @@
       "everyHour": "Her {{count}} saat",
       "everyHour_plural": "Her {{count}} saat"
     },
+    "detail": {
+      "infoCardTitle": "Bu Anahtar Hakkında",
+      "infoCardDescription": "Bu anahtar {{totalDays}} gün içinde kontrol yapmazsanız tetiklenecektir. Tetiklendiğinde gönderilecek mesajlar eklediğinizden emin olun."
+    },
     "form": {
       "name": "Anahtar Adı",
       "namePlaceholder": "örn., Acil Durum Kişileri",
@@ -178,7 +186,69 @@
     "messageCount": "{{count}} mesaj",
     "messageCount_plural": "{{count}} mesaj",
     "recipient": "Alıcı",
-    "subject": "Konu"
+    "subject": "Konu",
+    "created": "Oluşturuldu",
+    "sentAt": "Gönderildi",
+    "confirmDelete": "{{name}} için mesajı silmek istediğinizden emin misiniz?",
+    "form": {
+      "recipientEmail": "Alıcı E-postası",
+      "recipientEmailPlaceholder": "alici@ornek.com",
+      "recipientName": "Alıcı Adı",
+      "recipientNamePlaceholder": "Ahmet Yılmaz",
+      "subject": "Konu",
+      "subjectPlaceholder": "Önemli Mesaj",
+      "content": "Mesaj İçeriği",
+      "contentPlaceholder": "Mesajınızı buraya yazın...",
+      "encryptionNote": "Mesajınız güvenlik için saklanmadan önce şifrelenecektir.",
+      "create": "Mesaj Oluştur",
+      "update": "Mesajı Güncelle",
+      "validation": {
+        "emailRequired": "Alıcı e-postası gerekli",
+        "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
+        "nameRequired": "Alıcı adı gerekli",
+        "nameMin": "Alıcı adı en az 2 karakter olmalı",
+        "nameMax": "Alıcı adı 100 karakteri geçemez",
+        "subjectMax": "Konu 200 karakteri geçemez",
+        "contentRequired": "Mesaj içeriği gerekli",
+        "contentMin": "Mesaj içeriği en az 10 karakter olmalı",
+        "contentMax": "Mesaj içeriği 5000 karakteri geçemez"
+      }
+    },
+    "status": {
+      "sent": "Gönderildi",
+      "pending": "Beklemede",
+      "failed": "Başarısız"
+    },
+    "actions": {
+      "preview": "Önizle",
+      "edit": "Düzenle",
+      "delete": "Sil"
+    },
+    "preview": {
+      "title": "Mesaj Önizleme",
+      "recipient": "Alıcı Adı",
+      "email": "E-posta Adresi",
+      "subject": "Konu",
+      "created": "Oluşturulma Tarihi",
+      "content": "Mesaj İçeriği",
+      "noContent": "İçerik mevcut değil",
+      "encryptionNote": "Not: İçerik şifreli olarak saklanır. Bu orijinal metindir.",
+      "deliveryInfo": "İletim Bilgisi",
+      "attempts": "İletim Denemeleri",
+      "lastAttempt": "Son Deneme",
+      "failureReason": "Hata Nedeni"
+    },
+    "success": {
+      "created": "Mesaj başarıyla oluşturuldu!",
+      "updated": "Mesaj başarıyla güncellendi!",
+      "deleted": "Mesaj başarıyla silindi!"
+    },
+    "errors": {
+      "fetchFailed": "Mesajlar yüklenemedi",
+      "createFailed": "Mesaj oluşturulamadı",
+      "updateFailed": "Mesaj güncellenemedi",
+      "deleteFailed": "Mesaj silinemedi"
+    }
   },
   "header": {
     "dashboard": "Ana Sayfa",
@@ -187,7 +257,72 @@
     "login": "Giriş Yap",
     "signUp": "Kayıt Ol"
   },
+  "footer": {
+    "copyright": "© {{year}} Tüm hakları saklıdır.",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Hizmet Şartları",
+    "documentation": "Dokümantasyon",
+    "contact": "İletişim",
+    "description": "Belirli bir zaman dilimi içinde kontrol yapmazsanız önceden yapılandırılmış mesajları otomatik olarak gönderen güvenli mesaj iletim sistemi."
+  },
   "toast": {
     "passwordResetSoon": "Parola sıfırlama özelliği yakında geliyor!"
+  },
+  "home": {
+    "badge": "Güvenli Dijital Miras Koruması",
+    "hero": {
+      "title": "Uyanmadan Önce Ölürsem",
+      "subtitle": "Dijital Hayatınız İçin Bir Ölü Adam Anahtarı",
+      "description": "Kontrol yapmazsanız sevdiklerinize otomatik olarak şifrelenmiş mesajlar gönderin. Önemli bilgilerinizin en çok ihtiyaç duyulduğunda doğru kişilere ulaşmasını sağlayın."
+    },
+    "cta": {
+      "getStarted": "Ücretsiz Başlayın",
+      "learnMore": "Daha Fazla Bilgi"
+    },
+    "features": {
+      "title": "Neden Bizi Seçmelisiniz?",
+      "subtitle": "Kurumsal düzeyde güvenlik ve otomasyon ile gönül rahatlığı",
+      "items": {
+        "automated": {
+          "title": "Otomatik İzleme",
+          "description": "Kontrol programınızı ayarlayın, biz 7/24 izleyelim. Kontrol yapmazsanız otomatik olarak harekete geçeriz."
+        },
+        "encrypted": {
+          "title": "Banka Seviyesi Şifreleme",
+          "description": "Mesajlarınız AES-256-GCM ile şifrelenir. Sadece hedef alıcılar şifreyi çözüp okuyabilir."
+        },
+        "flexible": {
+          "title": "Esnek Kontroller",
+          "description": "Günlükten yıllığa kendi programınızı seçin. Ek esneklik için ek süreler belirleyin."
+        },
+        "peace": {
+          "title": "Gönül Rahatlığı",
+          "description": "Önemli bilgilerinizin sevdiklerinize en çok ihtiyaç duyduklarında ulaşacağını bilerek rahatlayın."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Nasıl Çalışır?",
+      "subtitle": "Basit kurulum, üç kolay adımda güçlü koruma",
+      "steps": {
+        "create": {
+          "title": "Anahtarınızı Oluşturun",
+          "description": "Sevdikleriniz için şifrelenmiş mesajlar oluşturun ve kontrol programınızı yapılandırın."
+        },
+        "checkin": {
+          "title": "Düzenli Kontroller",
+          "description": "Seçtiğiniz aralıklarla kontrol yapın. İyi olduğunuzu onaylamak için sadece bir tık yeterli."
+        },
+        "relax": {
+          "title": "Rahatlayın ve Yaşayın",
+          "description": "Gerisini biz hallederiz. Kontrol yapmazsanız mesajlarınız otomatik olarak iletilir."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Dijital Mirasınızı Korumaya Hazır mısınız?",
+      "subtitle": "Önemli bilgilerini güvence altına alan binlerce kişiye katılın. Bugün ücretsiz hesabınızı başlatın.",
+      "button": "Ücretsiz Hesap Oluştur"
+    }
   }
 }

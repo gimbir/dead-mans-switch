@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import { ArrowLeft } from 'lucide-react';
 import { MainLayout } from '@components/layout/MainLayout';
 import { SwitchForm } from '@components/switch';
-import { switchService } from '@services/switch.service';
+import { useCreateSwitch } from '@/hooks/useSwitches';
 import { ROUTES } from '@constants/index';
 import type { CreateSwitchData, UpdateSwitchData } from '@/types';
 
@@ -28,24 +26,18 @@ export const SwitchCreatePage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  // Create mutation
-  const createMutation = useMutation({
-    mutationFn: (data: CreateSwitchData) => switchService.createSwitch(data),
-    onSuccess: (createdSwitch) => {
-      // Show success message
-      toast.success(t('switches.form.createSuccess'));
-      // Redirect to switch detail page
-      navigate(`${ROUTES.SWITCHES}/${createdSwitch.id}`);
-    },
-    onError: (error) => {
-      setError(error instanceof Error ? error.message : t('switches.form.createError'));
-      toast.error(t('switches.form.createError'));
-    }
-  });
+  // Create mutation using custom hook
+  const createMutation = useCreateSwitch();
 
   const handleSubmit = async (data: CreateSwitchData | UpdateSwitchData) => {
     setError(null);
-    await createMutation.mutateAsync(data as CreateSwitchData);
+    try {
+      const createdSwitch = await createMutation.mutateAsync(data as CreateSwitchData);
+      // Redirect to switch detail page (toast is shown by hook)
+      navigate(`${ROUTES.SWITCHES}/${createdSwitch.id}`);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : t('switches.form.createError'));
+    }
   };
 
   const handleBack = () => {

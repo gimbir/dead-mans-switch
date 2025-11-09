@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Plus, Search, Filter } from 'lucide-react';
 import { MainLayout } from '@components/layout/MainLayout';
 import { SwitchList } from '@components/switch';
-import { switchService } from '@services/switch.service';
+import { useSwitches, useDeleteSwitch } from '@/hooks/useSwitches';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import { ROUTES } from '@constants/index';
 import type { SwitchStatus } from '@/types';
 
@@ -26,7 +27,6 @@ import type { SwitchStatus } from '@/types';
  */
 export const SwitchListPage = () => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
 
   // State for filters and pagination
   const [page, setPage] = useState(1);
@@ -34,38 +34,35 @@ export const SwitchListPage = () => {
   const [statusFilter, setStatusFilter] = useState<SwitchStatus | 'ALL'>('ALL');
   const limit = 12; // Items per page
 
-  // Fetch switches with filters
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['switches', page, limit, statusFilter],
-    queryFn: () =>
-      switchService.getSwitches({
-        page,
-        limit
-        // Add status filter when backend supports it
-        // status: statusFilter !== 'ALL' ? statusFilter : undefined
-      })
+  // Fetch switches with filters using custom hook
+  const { data, isLoading, error } = useSwitches({
+    page,
+    limit
+    // Add status filter when backend supports it
+    // status: statusFilter !== 'ALL' ? statusFilter : undefined
   });
 
-  // Delete mutation
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => switchService.deleteSwitch(id),
-    onSuccess: () => {
-      // Invalidate and refetch switches
-      queryClient.invalidateQueries({ queryKey: ['switches'] });
-    }
-  });
+  // Delete mutation using custom hook
+  const deleteMutation = useDeleteSwitch();
+  const confirmDialog = useConfirmDialog();
 
   // Handle delete with confirmation
-  const handleDelete = async (id: string) => {
-    if (window.confirm(t('switches.deleteConfirm'))) {
-      try {
-        await deleteMutation.mutateAsync(id);
-        toast.success(t('switches.deleteSuccess'));
-      } catch (error) {
-        toast.error(t('switches.deleteError'));
-        console.error('Delete failed:', error);
-      }
-    }
+  const handleDelete = (id: string) => {
+    confirmDialog.openDialog({
+      title: t('common.confirm'),
+      message: t('switches.deleteConfirm'),
+      variant: 'danger',
+      confirmText: t('common.delete'),
+      onConfirm: async () => {
+        try {
+          await deleteMutation.mutateAsync(id);
+          toast.success(t('switches.deleteSuccess'));
+        } catch (error) {
+          toast.error(t('switches.deleteError'));
+          console.error('Delete failed:', error);
+        }
+      },
+    });
   };
 
   // Handle page change
@@ -170,6 +167,19 @@ export const SwitchListPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={confirmDialog.closeDialog}
+        onConfirm={confirmDialog.handleConfirm}
+        title={confirmDialog.config.title}
+        message={confirmDialog.config.message}
+        confirmText={confirmDialog.config.confirmText}
+        cancelText={confirmDialog.config.cancelText}
+        variant={confirmDialog.config.variant}
+        isLoading={confirmDialog.isLoading}
+      />
     </MainLayout>
   );
 };

@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Plus, Clock, AlertCircle, CheckCircle, PauseCircle, Power } from 'lucide-react';
 import { MainLayout } from '@components/layout/MainLayout';
-import { switchService } from '@services/switch.service';
+import { useSwitches } from '@/hooks/useSwitches';
 import { ROUTES } from '@constants/index';
 import type { Switch } from '@/types';
 
@@ -23,15 +22,12 @@ import type { Switch } from '@/types';
 export const DashboardPage = () => {
   const { t } = useTranslation();
 
-  // Fetch all switches
+  // Fetch all switches using custom hook
   const {
     data: switchesResponse,
     isLoading,
     error
-  } = useQuery({
-    queryKey: ['switches'],
-    queryFn: () => switchService.getSwitches()
-  });
+  } = useSwitches({ isActive: true });
 
   const switches = switchesResponse?.items || [];
 

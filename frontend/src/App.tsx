@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // Providers
@@ -6,12 +6,19 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 
 // Components
 import { ProtectedRoute } from '@components/common/ProtectedRoute';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 // Pages
+import { HomePage } from '@pages/HomePage';
 import { LoginPage } from '@pages/auth/LoginPage';
 import { RegisterPage } from '@pages/auth/RegisterPage';
 import { DashboardPage } from '@pages/dashboard/DashboardPage';
-import { SwitchListPage, SwitchCreatePage, SwitchDetailPage } from '@pages/switch';
+import {
+  SwitchListPage,
+  SwitchCreatePage,
+  SwitchDetailPage,
+  SwitchEditPage
+} from '@pages/switch';
 import { ThemeDemoPage } from '@pages/ThemeDemoPage';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
@@ -29,36 +36,69 @@ import { ROUTES } from '@constants/index';
  */
 function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-      {/* Toast notifications */}
-      <Toaster
-        position='top-right'
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff'
-          },
-          success: {
-            duration: 3000,
-            iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff'
+    <ErrorBoundary>
+      <ThemeProvider>
+        <BrowserRouter>
+        {/* Toast notifications */}
+        <Toaster
+          position='top-right'
+          toastOptions={{
+            duration: 4000,
+            className: '',
+            style: {
+              background: 'rgb(var(--bg-card))',
+              color: 'rgb(var(--text-primary))',
+              border: '1px solid rgb(var(--border-primary))',
+              borderRadius: '0.5rem',
+              padding: '1rem',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+            },
+            success: {
+              duration: 3000,
+              style: {
+                background: 'rgb(var(--bg-card))',
+                color: 'rgb(var(--text-primary))',
+                border: '1px solid rgb(34 197 94)',
+              },
+              iconTheme: {
+                primary: 'rgb(34 197 94)',
+                secondary: 'rgb(var(--bg-card))',
+              }
+            },
+            error: {
+              duration: 5000,
+              style: {
+                background: 'rgb(var(--bg-card))',
+                color: 'rgb(var(--text-primary))',
+                border: '1px solid rgb(239 68 68)',
+              },
+              iconTheme: {
+                primary: 'rgb(239 68 68)',
+                secondary: 'rgb(var(--bg-card))',
+              }
+            },
+            loading: {
+              style: {
+                background: 'rgb(var(--bg-card))',
+                color: 'rgb(var(--text-primary))',
+                border: '1px solid rgb(var(--color-primary))',
+              },
+              iconTheme: {
+                primary: 'rgb(var(--color-primary))',
+                secondary: 'rgb(var(--bg-card))',
+              }
             }
-          },
-          error: {
-            duration: 5000,
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#fff'
-            }
-          }
-        }}
-      />
+          }}
+        />
 
-      <Routes>
+        <Routes>
         {/* Public Routes */}
+        <Route
+          path={ROUTES.HOME}
+          element={<HomePage />}
+        />
         <Route
           path={ROUTES.LOGIN}
           element={<LoginPage />}
@@ -98,6 +138,14 @@ function App() {
           }
         />
         <Route
+          path={ROUTES.SWITCH_EDIT}
+          element={
+            <ProtectedRoute>
+              <SwitchEditPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path={ROUTES.SWITCH_DETAIL}
           element={
             <ProtectedRoute>
@@ -106,25 +154,15 @@ function App() {
           }
         />
 
-        {/* Redirect root to dashboard or login */}
-        <Route
-          path={ROUTES.HOME}
-          element={
-            <Navigate
-              to={ROUTES.DASHBOARD}
-              replace
-            />
-          }
-        />
-
         {/* 404 Page */}
         <Route
           path='*'
           element={<NotFoundPage />}
         />
-      </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+        </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -110,6 +110,9 @@ export interface Message {
   encryptedContent: string;
   isSent: boolean;
   sentAt?: string;
+  deliveryAttempts: number;
+  lastAttemptAt?: string;
+  failureReason?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -117,7 +120,7 @@ export interface Message {
 export interface CreateMessageData {
   recipientEmail: string;
   recipientName: string;
-  subject: string;
+  subject?: string;
   encryptedContent: string;
 }
 
@@ -127,6 +130,10 @@ export interface UpdateMessageData {
   subject?: string;
   encryptedContent?: string;
 }
+
+// Type aliases for hooks consistency
+export type CreateMessageRequest = CreateMessageData;
+export type UpdateMessageRequest = UpdateMessageData;
 
 /**
  * CheckIn Types

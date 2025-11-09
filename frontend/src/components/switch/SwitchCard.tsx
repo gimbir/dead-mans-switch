@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Clock, Edit, Trash2, Power, CheckCircle, AlertCircle, PauseCircle } from 'lucide-react';
 import type { Switch } from '@/types';
 import { ROUTES } from '@constants/index';
@@ -24,6 +24,7 @@ interface SwitchCardProps {
  */
 export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchCardProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   // Calculate time until due
   const getTimeUntilDue = (dueDate: string) => {
@@ -98,7 +99,7 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onDelete && window.confirm(t('switches.delete') + '?')) {
+    if (onDelete) {
       onDelete(switchData.id);
     }
   };
@@ -106,12 +107,14 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
   const handleEdit = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    navigate(`${ROUTES.SWITCHES}/${switchData.id}/edit`);
   };
 
   return (
     <Link
       to={`${ROUTES.SWITCHES}/${switchData.id}`}
       className="block bg-theme-card border border-theme-primary rounded-lg p-6 hover:bg-theme-hover transition-colors"
+      aria-label={`View details for ${switchData.name} switch`}
     >
       {/* Header: Name + Status Badge */}
       <div className="flex items-start justify-between mb-4">
@@ -171,20 +174,21 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
       {/* Actions */}
       {showActions && (
         <div className="flex items-center justify-end gap-2 pt-4 border-t border-theme-primary">
-          <Link
-            to={`${ROUTES.SWITCHES}/${switchData.id}/edit`}
+          <button
             onClick={handleEdit}
             className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-theme-secondary hover:text-brand-primary transition"
+            aria-label={`Edit ${switchData.name} switch`}
           >
-            <Edit className="h-4 w-4" />
+            <Edit className="h-4 w-4" aria-hidden="true" />
             <span>{t('common.edit')}</span>
-          </Link>
+          </button>
           {onDelete && (
             <button
               onClick={handleDelete}
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 hover:text-red-700 transition"
+              aria-label={`Delete ${switchData.name} switch`}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
               <span>{t('common.delete')}</span>
             </button>
           )}

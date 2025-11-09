@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle, Loader2 } from 'lucide-react';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { ConfirmDialog } from '@/components/common/ConfirmDialog';
 import type { Switch } from '@/types';
 
 interface CheckInButtonProps {
@@ -34,6 +36,7 @@ export const CheckInButton = ({
 }: CheckInButtonProps) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
+  const confirmDialog = useConfirmDialog();
 
   // Check if switch can be checked in
   const canCheckIn =
@@ -41,17 +44,7 @@ export const CheckInButton = ({
     (switchData.status === 'ACTIVE' || switchData.status === 'PAUSED') &&
     switchData.isActive;
 
-  const handleCheckIn = async () => {
-    if (!canCheckIn || isLoading) return;
-
-    // Show confirmation if enabled
-    if (showConfirmation) {
-      const confirmed = window.confirm(
-        `${t('dashboard.confirmCheckIn')}\n${t('dashboard.confirmCheckInMessage')}`
-      );
-      if (!confirmed) return;
-    }
-
+  const performCheckIn = async () => {
     try {
       setIsLoading(true);
       await onCheckIn(switchData.id);
@@ -59,6 +52,23 @@ export const CheckInButton = ({
       console.error('Check-in failed:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleCheckIn = () => {
+    if (!canCheckIn || isLoading) return;
+
+    // Show confirmation if enabled
+    if (showConfirmation) {
+      confirmDialog.openDialog({
+        title: t('dashboard.confirmCheckIn'),
+        message: t('dashboard.confirmCheckInMessage'),
+        variant: 'primary',
+        confirmText: t('dashboard.checkInNow'),
+        onConfirm: performCheckIn,
+      });
+    } else {
+      performCheckIn();
     }
   };
 
@@ -80,27 +90,44 @@ export const CheckInButton = ({
   const disabledClasses = 'opacity-50 cursor-not-allowed';
 
   return (
-    <button
-      onClick={handleCheckIn}
-      disabled={!canCheckIn || isLoading}
-      className={`
-        flex items-center justify-center gap-2 rounded-md font-medium transition
-        ${sizeClasses[size]}
-        ${!canCheckIn || isLoading ? disabledClasses : variantClasses[variant]}
-      `}
-      aria-label={t('dashboard.checkInNow')}
-    >
-      {isLoading ? (
-        <>
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span>{t('dashboard.checkingIn')}</span>
-        </>
-      ) : (
-        <>
-          <CheckCircle className="h-4 w-4" />
-          <span>{t('dashboard.checkInNow')}</span>
-        </>
+    <>
+      <button
+        onClick={handleCheckIn}
+        disabled={!canCheckIn || isLoading}
+        className={`
+          flex items-center justify-center gap-2 rounded-md font-medium transition
+          ${sizeClasses[size]}
+          ${!canCheckIn || isLoading ? disabledClasses : variantClasses[variant]}
+        `}
+        aria-label={t('dashboard.checkInNow')}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>{t('dashboard.checkingIn')}</span>
+          </>
+        ) : (
+          <>
+            <CheckCircle className="h-4 w-4" />
+            <span>{t('dashboard.checkInNow')}</span>
+          </>
+        )}
+      </button>
+
+      {/* Confirm Dialog */}
+      {showConfirmation && (
+        <ConfirmDialog
+          isOpen={confirmDialog.isOpen}
+          onClose={confirmDialog.closeDialog}
+          onConfirm={confirmDialog.handleConfirm}
+          title={confirmDialog.config.title}
+          message={confirmDialog.config.message}
+          confirmText={confirmDialog.config.confirmText}
+          cancelText={confirmDialog.config.cancelText}
+          variant={confirmDialog.config.variant}
+          isLoading={confirmDialog.isLoading || isLoading}
+        />
       )}
-    </button>
+    </>
   );
 };

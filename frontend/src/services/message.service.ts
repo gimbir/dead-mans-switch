@@ -9,21 +9,37 @@ import type {
   PaginationParams
 } from '@/types';
 
+// Backend response format (different from frontend)
+interface BackendPaginatedMessages {
+  messages: Message[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
 export const messageService = {
   /**
    * Get all messages for a switch
    */
   async getMessages(
     switchId: string,
-    params?: PaginationParams & { includeDeleted?: boolean }
+    page: number = 1,
+    limit: number = 10
   ): Promise<PaginatedResponse<Message>> {
-    const response = await api.get<ApiResponse<PaginatedResponse<Message>>>(
+    const response = await api.get<ApiResponse<BackendPaginatedMessages>>(
       API_ENDPOINTS.SWITCH_MESSAGES(switchId),
-      { params }
+      { params: { page, limit } }
     );
 
     if (response.data.success && response.data.data) {
-      return response.data.data;
+      // Transform backend format to frontend format
+      return {
+        items: response.data.data.messages,
+        pagination: response.data.data.pagination,
+      };
     }
 
     throw new Error(response.data.error?.message || 'Failed to fetch messages');
