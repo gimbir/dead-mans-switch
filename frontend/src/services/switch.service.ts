@@ -81,7 +81,11 @@ export const switchService = {
    * Perform check-in
    */
   async performCheckIn(id: string, data?: PerformCheckInData): Promise<CheckIn> {
-    const response = await api.post<ApiResponse<CheckIn>>(API_ENDPOINTS.SWITCH_CHECKIN(id), data);
+    // Always send at least an empty object to satisfy backend validation
+    const response = await api.post<ApiResponse<CheckIn>>(
+      API_ENDPOINTS.SWITCH_CHECKIN(id),
+      data || {}
+    );
 
     if (response.data.success && response.data.data) {
       return response.data.data;

@@ -43,12 +43,12 @@ export const SwitchEditPage = () => {
     if (!id) return;
     setError(null);
     try {
-      const updatedSwitch = await updateMutation.mutateAsync({
+      await updateMutation.mutateAsync({
         id,
         data: data as UpdateSwitchData
       });
-      // Redirect to switch detail page (toast is shown by hook)
-      navigate(`${ROUTES.SWITCHES}/${updatedSwitch.id}`);
+      // Navigate back to detail page (cache will be automatically refetched)
+      navigate(`${ROUTES.SWITCHES}/${id}`);
     } catch (error) {
       setError(error instanceof Error ? error.message : t('switches.form.updateError'));
     }
@@ -126,6 +126,7 @@ export const SwitchEditPage = () => {
                   <SwitchForm
                     initialData={switchData}
                     onSubmit={handleSubmit}
+                    onCancel={handleBack}
                     isSubmitting={updateMutation.isPending}
                     mode="edit"
                   />

@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@stores/authStore';
+import { PasswordInput } from '@components/common/PasswordInput';
 
 /**
  * LoginForm Component
@@ -75,7 +76,7 @@ export const LoginForm = () => {
             type='email'
             autoComplete='email'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
+            className={`mt-1 block w-full px-3 py-2 bg-theme-input border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.email
                 ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                 : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
@@ -94,16 +95,12 @@ export const LoginForm = () => {
           >
             {t('auth.login.password')}
           </label>
-          <input
+          <PasswordInput
             id='password'
-            type='password'
             autoComplete='current-password'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
-              errors.password
-                ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
-            } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+            error={!!errors.password}
+            isLoading={isLoading}
             placeholder={t('auth.login.passwordPlaceholder')}
             {...register('password')}
           />

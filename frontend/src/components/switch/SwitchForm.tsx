@@ -7,6 +7,7 @@ import type { Switch, CreateSwitchData, UpdateSwitchData } from '@/types';
 interface SwitchFormProps {
   initialData?: Switch;
   onSubmit: (data: CreateSwitchData | UpdateSwitchData) => Promise<void>;
+  onCancel?: () => void;
   isSubmitting?: boolean;
   mode?: 'create' | 'edit';
 }
@@ -35,6 +36,7 @@ interface SwitchFormData {
 export const SwitchForm = ({
   initialData,
   onSubmit,
+  onCancel,
   isSubmitting = false,
   mode = 'create'
 }: SwitchFormProps) => {
@@ -99,7 +101,7 @@ export const SwitchForm = ({
             }
           })}
           placeholder={t('switches.form.namePlaceholder')}
-          className={`w-full px-4 py-2 border rounded-md bg-theme-card text-theme-primary placeholder-theme-secondary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
+          className={`w-full px-4 py-2 border rounded-md bg-theme-input text-theme-primary placeholder-theme-secondary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
             errors.name ? 'border-red-500' : 'border-theme-primary'
           }`}
           disabled={isSubmitting}
@@ -123,7 +125,7 @@ export const SwitchForm = ({
             }
           })}
           placeholder={t('switches.form.descriptionPlaceholder')}
-          className={`w-full px-4 py-2 border rounded-md bg-theme-card text-theme-primary placeholder-theme-secondary focus:outline-none focus:ring-2 focus:ring-brand-primary transition resize-none ${
+          className={`w-full px-4 py-2 border rounded-md bg-theme-input text-theme-primary placeholder-theme-secondary focus:outline-none focus:ring-2 focus:ring-brand-primary transition resize-none ${
             errors.description ? 'border-red-500' : 'border-theme-primary'
           }`}
           disabled={isSubmitting}
@@ -160,7 +162,7 @@ export const SwitchForm = ({
               message: t('switches.form.validation.intervalMax')
             }
           })}
-          className={`w-full px-4 py-2 border rounded-md bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
+          className={`w-full px-4 py-2 border rounded-md bg-theme-input text-theme-primary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
             errors.checkInIntervalDays ? 'border-red-500' : 'border-theme-primary'
           }`}
           disabled={isSubmitting}
@@ -205,7 +207,7 @@ export const SwitchForm = ({
               return true;
             }
           })}
-          className={`w-full px-4 py-2 border rounded-md bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
+          className={`w-full px-4 py-2 border rounded-md bg-theme-input text-theme-primary focus:outline-none focus:ring-2 focus:ring-brand-primary transition ${
             errors.gracePeriodDays ? 'border-red-500' : 'border-theme-primary'
           }`}
           disabled={isSubmitting}
@@ -241,7 +243,7 @@ export const SwitchForm = ({
       <div className="flex items-center justify-end gap-4 pt-4">
         <button
           type="button"
-          onClick={() => reset()}
+          onClick={onCancel || (() => reset())}
           disabled={isSubmitting}
           className="px-6 py-2 border border-theme-primary text-theme-primary rounded-md hover:bg-theme-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
         >

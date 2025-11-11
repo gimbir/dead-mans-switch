@@ -77,6 +77,7 @@ export const SwitchCreatePage = () => {
             <div className="bg-theme-card border border-theme-primary rounded-lg p-6 shadow-sm">
               <SwitchForm
                 onSubmit={handleSubmit}
+                onCancel={handleBack}
                 isSubmitting={createMutation.isPending}
                 mode="create"
               />

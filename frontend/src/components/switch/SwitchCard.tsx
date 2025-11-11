@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { Clock, Edit, Trash2, Power, CheckCircle, AlertCircle, PauseCircle } from 'lucide-react';
+import { useCountdown } from '@/hooks/useCountdown';
 import type { Switch } from '@/types';
 import { ROUTES } from '@constants/index';
 
@@ -26,26 +27,23 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // Calculate time until due
-  const getTimeUntilDue = (dueDate: string) => {
-    const now = new Date().getTime();
-    const due = new Date(dueDate).getTime();
-    const diff = due - now;
+  // Use real-time countdown hook
+  const countdown = useCountdown(switchData.nextCheckInDue, switchData.checkInIntervalDays);
 
-    if (diff < 0) {
-      return { text: t('dashboard.overdue'), isOverdue: true };
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (days > 0) {
-      return { text: `${days} ${t('dashboard.days')}`, isOverdue: false };
-    } else if (hours > 0) {
-      return { text: `${hours} ${t('dashboard.hours')}`, isOverdue: false };
+  // Get progress bar color based on time remaining
+  const getProgressBarColor = (percentageRemaining: number): string => {
+    if (percentageRemaining > 50) {
+      // Green: Plenty of time (>50%)
+      return 'bg-green-500';
+    } else if (percentageRemaining > 25) {
+      // Yellow/Amber: Moderate time (25-50%)
+      return 'bg-amber-500';
+    } else if (percentageRemaining > 10) {
+      // Orange: Low time (10-25%)
+      return 'bg-orange-500';
     } else {
-      return { text: `${minutes} ${t('dashboard.minutes')}`, isOverdue: false };
+      // Red: Critical time (<10%)
+      return 'bg-red-500';
     }
   };
 
@@ -94,7 +92,6 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
 
   const statusConfig = getStatusConfig(switchData.status);
   const StatusIcon = statusConfig.icon;
-  const timeInfo = switchData.nextCheckInDue ? getTimeUntilDue(switchData.nextCheckInDue) : null;
 
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -145,18 +142,16 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
         </div>
 
         {/* Next Check-in */}
-        {switchData.nextCheckInDue && (
+        {switchData.nextCheckInDue && countdown && (
           <div>
             <p className="text-xs text-theme-secondary mb-1">{t('switches.nextCheckIn')}</p>
-            {timeInfo && (
-              <p
-                className={`text-sm font-medium ${
-                  timeInfo.isOverdue ? 'text-red-600' : 'text-theme-primary'
-                }`}
-              >
-                {timeInfo.isOverdue ? timeInfo.text : `${t('dashboard.dueIn')} ${timeInfo.text}`}
-              </p>
-            )}
+            <p
+              className={`text-sm font-medium ${
+                countdown.isOverdue ? 'text-red-600' : 'text-theme-primary'
+              }`}
+            >
+              {countdown.isOverdue ? countdown.text : `${t('dashboard.dueIn')} ${countdown.text}`}
+            </p>
           </div>
         )}
 
@@ -196,26 +191,50 @@ export const SwitchCard = ({ switchData, onDelete, showActions = true }: SwitchC
       )}
 
       {/* Countdown Timer Visual Indicator */}
-      {switchData.status === 'ACTIVE' && timeInfo && !timeInfo.isOverdue && (
+      {switchData.status === 'ACTIVE' && countdown && !countdown.isOverdue && (
         <div className="mt-4 pt-4 border-t border-theme-primary">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-theme-secondary" />
-            <div className="flex-1">
-              <div className="h-2 bg-theme-secondary rounded-full overflow-hidden">
+            <div className="flex-1 relative group">
+              {/* Progress Bar */}
+              <div className="h-2 bg-theme-secondary rounded-full overflow-hidden cursor-help">
                 <div
-                  className="h-full bg-brand-primary transition-all duration-1000"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      Math.max(
-                        0,
-                        ((new Date(switchData.nextCheckInDue!).getTime() - Date.now()) /
-                          (switchData.checkInIntervalDays * 24 * 60 * 60 * 1000)) *
-                          100
-                      )
-                    )}%`
-                  }}
+                  className={`h-full transition-all duration-1000 ${getProgressBarColor(countdown.percentageRemaining)}`}
+                  style={{ width: `${countdown.percentageRemaining}%` }}
                 />
+              </div>
+
+              {/* Tooltip - Shows on hover */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-10 pointer-events-none">
+                <div className="flex flex-col gap-1">
+                  <div className="font-semibold text-center border-b border-gray-600 pb-1 mb-1">
+                    {t('dashboard.timeRemaining')}
+                  </div>
+                  {countdown.timeLeft.days > 0 && (
+                    <div className="flex justify-between gap-4">
+                      <span>{t('dashboard.days')}:</span>
+                      <span className="font-medium">{countdown.timeLeft.days}</span>
+                    </div>
+                  )}
+                  {(countdown.timeLeft.days > 0 || countdown.timeLeft.hours > 0) && (
+                    <div className="flex justify-between gap-4">
+                      <span>{t('dashboard.hours')}:</span>
+                      <span className="font-medium">{countdown.timeLeft.hours}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between gap-4">
+                    <span>{t('dashboard.minutes')}:</span>
+                    <span className="font-medium">{countdown.timeLeft.minutes}</span>
+                  </div>
+                  <div className="flex justify-between gap-4 text-gray-400">
+                    <span>{t('dashboard.seconds')}:</span>
+                    <span className="font-medium">{countdown.timeLeft.seconds}</span>
+                  </div>
+                </div>
+                {/* Tooltip arrow */}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                  <div className="border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                </div>
               </div>
             </div>
           </div>

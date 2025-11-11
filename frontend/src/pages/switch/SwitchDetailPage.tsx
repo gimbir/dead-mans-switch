@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { useSwitch, switchKeys } from '@/hooks/useSwitches';
 import {
   ArrowLeft,
   Edit,
@@ -53,11 +54,7 @@ export const SwitchDetailPage = () => {
   const confirmDialog = useConfirmDialog();
 
   // Fetch switch details
-  const { data: switchData, isLoading, error } = useQuery({
-    queryKey: ['switch', id],
-    queryFn: () => switchService.getSwitch(id!),
-    enabled: !!id
-  });
+  const { data: switchData, isLoading, error } = useSwitch(id!);
 
   // Delete mutation
   const deleteMutation = useMutation({
@@ -76,7 +73,7 @@ export const SwitchDetailPage = () => {
     mutationFn: (switchId: string) => switchService.performCheckIn(switchId),
     onSuccess: () => {
       toast.success(t('dashboard.checkInSuccess'));
-      queryClient.invalidateQueries({ queryKey: ['switch', id] });
+      queryClient.invalidateQueries({ queryKey: switchKeys.detail(id!) });
     },
     onError: () => {
       toast.error(t('dashboard.checkInError'));

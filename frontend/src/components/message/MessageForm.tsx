@@ -132,7 +132,7 @@ export function MessageForm({ switchId, message, onSuccess, onCancel }: MessageF
           autoComplete='email'
           aria-invalid={errors.recipientEmail ? 'true' : 'false'}
           aria-describedby={errors.recipientEmail ? 'recipientEmail-error' : undefined}
-          className={`w-full px-4 py-2 border rounded-lg bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
+          className={`w-full px-4 py-2 border rounded-lg bg-theme-input text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
             errors.recipientEmail
               ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
               : 'border-theme-primary focus:ring-brand-primary focus:border-brand-primary'
@@ -161,7 +161,7 @@ export function MessageForm({ switchId, message, onSuccess, onCancel }: MessageF
           type='text'
           id='recipientName'
           autoComplete='name'
-          className={`w-full px-4 py-2 border rounded-lg bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
+          className={`w-full px-4 py-2 border rounded-lg bg-theme-input text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
             errors.recipientName
               ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
               : 'border-theme-primary focus:ring-brand-primary focus:border-brand-primary'
@@ -190,7 +190,7 @@ export function MessageForm({ switchId, message, onSuccess, onCancel }: MessageF
           {...register('subject')}
           type='text'
           id='subject'
-          className={`w-full px-4 py-2 border rounded-lg bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
+          className={`w-full px-4 py-2 border rounded-lg bg-theme-input text-theme-primary focus:outline-none focus:ring-2 transition-colors ${
             errors.subject
               ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
               : 'border-theme-primary focus:ring-brand-primary focus:border-brand-primary'
@@ -218,7 +218,7 @@ export function MessageForm({ switchId, message, onSuccess, onCancel }: MessageF
           {...register('content')}
           id='content'
           rows={8}
-          className={`w-full px-4 py-2 border rounded-lg bg-theme-card text-theme-primary focus:outline-none focus:ring-2 resize-y transition-colors ${
+          className={`w-full px-4 py-2 border rounded-lg bg-theme-input text-theme-primary focus:outline-none focus:ring-2 resize-y transition-colors ${
             errors.content
               ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
               : 'border-theme-primary focus:ring-brand-primary focus:border-brand-primary'

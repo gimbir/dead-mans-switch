@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@stores/authStore';
+import { PasswordInput } from '@components/common/PasswordInput';
 
 /**
  * RegisterForm Component
@@ -115,7 +116,7 @@ export const RegisterForm = () => {
             type='text'
             autoComplete='name'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
+            className={`mt-1 block w-full px-3 py-2 bg-theme-input border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.name
                 ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                 : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
@@ -139,7 +140,7 @@ export const RegisterForm = () => {
             type='email'
             autoComplete='email'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
+            className={`mt-1 block w-full px-3 py-2 bg-theme-input border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
               errors.email
                 ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
                 : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
@@ -158,16 +159,12 @@ export const RegisterForm = () => {
           >
             {t('auth.register.password')}
           </label>
-          <input
+          <PasswordInput
             id='password'
-            type='password'
             autoComplete='new-password'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
-              errors.password
-                ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
-            } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+            error={!!errors.password}
+            isLoading={isLoading}
             placeholder={t('auth.register.passwordPlaceholder')}
             {...register('password')}
           />
@@ -228,16 +225,12 @@ export const RegisterForm = () => {
           >
             {t('auth.register.confirmPassword')}
           </label>
-          <input
+          <PasswordInput
             id='confirmPassword'
-            type='password'
             autoComplete='new-password'
             disabled={isLoading}
-            className={`mt-1 block w-full px-3 py-2 bg-theme-primary border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm text-theme-primary ${
-              errors.confirmPassword
-                ? 'border-red-300 focus:ring-red-500 focus:border-red-500'
-                : 'border-theme-primary focus:ring-blue-500 focus:border-blue-500'
-            } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+            error={!!errors.confirmPassword}
+            isLoading={isLoading}
             placeholder={t('auth.register.passwordPlaceholder')}
             {...register('confirmPassword')}
           />
