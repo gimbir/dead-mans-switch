@@ -107,7 +107,9 @@
     "confirmCheckInMessage": "Bu işlem geri sayım zamanlayıcınızı sıfırlayacak.",
     "days": "gün",
     "hours": "saat",
-    "minutes": "dakika"
+    "minutes": "dakika",
+    "seconds": "saniye",
+    "timeRemaining": "Kalan Süre"
   },
   "switches": {
     "title": "Anahtarlar",

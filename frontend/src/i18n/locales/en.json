@@ -107,7 +107,9 @@
     "confirmCheckInMessage": "This will reset your countdown timer.",
     "days": "days",
     "hours": "hours",
-    "minutes": "minutes"
+    "minutes": "minutes",
+    "seconds": "seconds",
+    "timeRemaining": "Time Remaining"
   },
   "switches": {
     "title": "Switches",
