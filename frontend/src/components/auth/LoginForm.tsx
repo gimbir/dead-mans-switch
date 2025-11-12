@@ -49,9 +49,17 @@ export const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const { email, password, rememberMe } = data;
-      await login({ email, password }, rememberMe || false);
+      const result = await login({ email, password }, rememberMe || false);
+
+      // Check if 2FA is required
+      if (result.requiresTwoFactor && result.userId) {
+        navigate('/verify-2fa', { state: { userId: result.userId }, replace: true });
+        return;
+      }
+
+      // Normal login success
       toast.success(t('auth.login.success'));
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     } catch (error: any) {
       toast.error(error.message || t('auth.login.error'));
     }

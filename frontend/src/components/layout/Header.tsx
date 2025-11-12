@@ -63,6 +63,12 @@ export const Header = () => {
                 >
                   {t('header.switches')}
                 </Link>
+                <Link
+                  to={ROUTES.SETTINGS}
+                  className='text-theme-secondary hover:text-brand-primary px-3 py-2 text-sm font-medium'
+                >
+                  {t('header.settings')}
+                </Link>
               </>
             )}
             {/* <Link
@@ -203,6 +209,13 @@ export const Header = () => {
                       className='block px-4 py-3 rounded-lg text-base font-medium text-theme-secondary hover:text-brand-primary hover:bg-theme-hover transition-colors'
                     >
                       {t('header.switches')}
+                    </Link>
+                    <Link
+                      to={ROUTES.SETTINGS}
+                      onClick={closeMobileMenu}
+                      className='block px-4 py-3 rounded-lg text-base font-medium text-theme-secondary hover:text-brand-primary hover:bg-theme-hover transition-colors'
+                    >
+                      {t('header.settings')}
                     </Link>
                     {/* <Link
                       to={ROUTES.THEME_DEMO}

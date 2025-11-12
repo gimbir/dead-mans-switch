@@ -152,3 +152,35 @@ export interface CheckIn {
 export interface PerformCheckInData {
   notes?: string;
 }
+
+/**
+ * Two-Factor Authentication Types
+ */
+export interface TwoFactorSetupData {
+  secret: string; // Encrypted secret (JSON string)
+  qrCodeDataUrl: string; // Data URL for QR code image
+  backupCodes: string[]; // Array of 10 backup codes
+}
+
+export interface Verify2FASetupRequest {
+  token: string; // 6-digit TOTP code
+  encryptedSecret: string; // From setup response
+  backupCodes: string[]; // From setup response
+}
+
+export interface Disable2FARequest {
+  password: string; // User's password for verification
+  token?: string; // Optional 2FA token
+}
+
+export interface Verify2FALoginRequest {
+  userId: string;
+  token: string; // 6-digit TOTP or backup code
+}
+
+export interface TwoFactorLoginResponse {
+  requiresTwoFactor?: boolean;
+  userId?: string;
+  user?: User;
+  tokens?: AuthTokens;
+}

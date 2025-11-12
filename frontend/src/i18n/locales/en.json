@@ -18,7 +18,16 @@
     "of": "of",
     "optional": "Optional",
     "unknown": "Unknown",
-    "pageInfo": "Page {{current}} of {{total}}"
+    "pageInfo": "Page {{current}} of {{total}}",
+    "copy": "Copy",
+    "copied": "Copied",
+    "download": "Download",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable": "Enable",
+    "disable": "Disable",
+    "comingSoon": "Coming Soon"
   },
   "auth": {
     "login": {
@@ -80,6 +89,60 @@
       "nameRequired": "Name is required",
       "nameMin": "Name must be at least 2 characters",
       "nameMax": "Name must be less than 50 characters"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security to your account",
+      "verifyTitle": "Two-Factor Authentication",
+      "verifyInstructions": "Enter the 6-digit code from your authenticator app",
+      "backupCodeInstructions": "Enter one of your backup codes",
+      "tokenLabel": "Authentication Code",
+      "tokenPlaceholder": "000000",
+      "backupCodeLabel": "Backup Code",
+      "backupCodePlaceholder": "XXXX-XXXX-XXXX",
+      "tokenRequired": "Authentication code is required",
+      "tokenLength": "Code must be exactly 6 digits",
+      "tokenNumeric": "Code must contain only numbers",
+      "tokenInvalid": "Invalid authentication code format",
+      "backupCodeFormat": "Backup code must be in format XXXX-XXXX-XXXX",
+      "verify": "Verify",
+      "verifying": "Verifying...",
+      "verifySuccess": "Successfully authenticated!",
+      "verifyError": "Invalid authentication code. Please try again.",
+      "useBackupCode": "Use a backup code instead",
+      "useAuthenticatorCode": "Use authenticator code",
+      "backToLogin": "Back to login",
+      "securityNote": "Your account is protected with two-factor authentication",
+      "setupTitle": "Enable Two-Factor Authentication",
+      "whatIs2FA": "What is Two-Factor Authentication?",
+      "twoFactorDescription": "Two-factor authentication (2FA) adds an extra layer of security to your account. You'll need both your password and a code from your phone to sign in.",
+      "setupSteps": "Setup Steps:",
+      "step1": "Download an authenticator app (Google Authenticator, Authy, etc.)",
+      "step2": "Scan the QR code with your authenticator app",
+      "step3": "Save your backup codes in a secure location",
+      "step4": "Enter the code from your app to verify",
+      "enable": "Enable 2FA",
+      "enableSuccess": "Two-factor authentication enabled successfully!",
+      "setupError": "Failed to setup 2FA. Please try again.",
+      "scanQRCode": "Step 1: Scan QR Code",
+      "scanInstructions": "Use your authenticator app to scan this QR code",
+      "saveBackupCodes": "Important: Save Your Backup Codes",
+      "backupCodesWarning": "Save these codes in a secure place. You can use them to access your account if you lose access to your authenticator app.",
+      "backupCodesTitle": "Step 2: Save Backup Codes",
+      "backupCodesCopied": "Backup codes copied to clipboard!",
+      "backupCodesDownloaded": "Backup codes downloaded!",
+      "verifySetup": "Step 3: Verify Setup",
+      "enterCodeFromApp": "Enter the 6-digit code from your authenticator app to complete setup",
+      "disableTitle": "Disable Two-Factor Authentication",
+      "disableWarningTitle": "Warning: Reduced Security",
+      "disableWarning": "Disabling 2FA will make your account less secure. You'll only need your password to sign in.",
+      "enterPasswordToDisable": "Enter your password to confirm",
+      "optionalTokenHelp": "For extra security, you can also provide your current 2FA code",
+      "disableConfirm": "Disable 2FA",
+      "disableSuccess": "Two-factor authentication disabled successfully",
+      "disableError": "Failed to disable 2FA. Please check your password.",
+      "recoveryOptions": "Recovery Options",
+      "backupCodesInfo": "If you lose access to your authenticator app, you can use one of your backup codes to sign in. Make sure to keep them safe!"
     }
   },
   "dashboard": {
@@ -252,9 +315,41 @@
       "deleteFailed": "Failed to delete message"
     }
   },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences",
+    "tabs": {
+      "security": "Security",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "preferences": "Preferences"
+    },
+    "security": {
+      "passwordTitle": "Password",
+      "passwordDescription": "Change your password",
+      "sessionsTitle": "Active Sessions",
+      "sessionsDescription": "Manage your active sessions and devices"
+    },
+    "profile": {
+      "infoTitle": "Profile Information",
+      "name": "Name",
+      "email": "Email",
+      "accountCreated": "Account Created",
+      "editInfo": "Edit profile information"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "description": "Manage how you receive notifications"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Customize your experience"
+    }
+  },
   "header": {
     "dashboard": "Dashboard",
     "switches": "Switches",
+    "settings": "Settings",
     "logout": "Logout",
     "login": "Login",
     "signUp": "Sign Up"

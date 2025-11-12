@@ -37,6 +37,10 @@ const UserPersistenceSchema = z.object({
   passwordResetToken: z.string().nullable(),
   passwordResetExpiry: z.date().nullable(),
   refreshToken: z.string().nullable(),
+  twoFactorSecret: z.string().nullable(),
+  twoFactorEnabled: z.boolean(),
+  twoFactorBackupCodes: z.array(z.string()),
+  lastBackupCodeUsedAt: z.date().nullable(),
   deletedAt: z.date().nullable(),
   version: z.number().int().nonnegative(),
   createdAt: z.date(),
@@ -52,6 +56,10 @@ export interface UserProps {
   passwordResetToken?: string | null;
   passwordResetExpiry?: Date | null;
   refreshToken?: string | null;
+  twoFactorSecret?: string | null;
+  twoFactorEnabled?: boolean;
+  twoFactorBackupCodes?: string[];
+  lastBackupCodeUsedAt?: Date | null;
   deletedAt?: Date | null;
   version?: number;
   createdAt?: Date;
@@ -82,6 +90,10 @@ export interface UserPersistenceData {
   passwordResetToken: string | null;
   passwordResetExpiry: Date | null;
   refreshToken: string | null;
+  twoFactorSecret: string | null;
+  twoFactorEnabled: boolean;
+  twoFactorBackupCodes: string[];
+  lastBackupCodeUsedAt: Date | null;
   deletedAt: Date | null;
   version: number;
   createdAt: Date;
@@ -101,6 +113,10 @@ export class User {
       passwordResetToken: props.passwordResetToken ?? null,
       passwordResetExpiry: props.passwordResetExpiry ?? null,
       refreshToken: props.refreshToken ?? null,
+      twoFactorSecret: props.twoFactorSecret ?? null,
+      twoFactorEnabled: props.twoFactorEnabled ?? false,
+      twoFactorBackupCodes: props.twoFactorBackupCodes ?? [],
+      lastBackupCodeUsedAt: props.lastBackupCodeUsedAt ?? null,
       deletedAt: props.deletedAt ?? null,
       version: props.version ?? 0,
       createdAt: props.createdAt ?? new Date(),
@@ -208,6 +224,22 @@ export class User {
 
   public get updatedAt(): Date {
     return this._props.updatedAt ?? new Date();
+  }
+
+  public get twoFactorSecret(): string | null {
+    return this._props.twoFactorSecret ?? null;
+  }
+
+  public get twoFactorEnabled(): boolean {
+    return this._props.twoFactorEnabled ?? false;
+  }
+
+  public get twoFactorBackupCodes(): string[] {
+    return this._props.twoFactorBackupCodes ?? [];
+  }
+
+  public get lastBackupCodeUsedAt(): Date | null {
+    return this._props.lastBackupCodeUsedAt ?? null;
   }
 
   // ==================== Business Logic Methods ====================
@@ -383,6 +415,70 @@ export class User {
     return Result.ok();
   }
 
+  // ==================== 2FA Methods ====================
+
+  /**
+   * Sets 2FA secret (encrypted)
+   */
+  public set twoFactorSecret(secret: string | null) {
+    this._props.twoFactorSecret = secret;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1;
+  }
+
+  /**
+   * Enables or disables 2FA
+   */
+  public set twoFactorEnabled(enabled: boolean) {
+    this._props.twoFactorEnabled = enabled;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1;
+  }
+
+  /**
+   * Sets 2FA backup codes (hashed)
+   */
+  public set twoFactorBackupCodes(codes: string[]) {
+    this._props.twoFactorBackupCodes = codes;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1;
+  }
+
+  /**
+   * Sets last backup code used timestamp
+   */
+  public set lastBackupCodeUsedAt(date: Date | null) {
+    this._props.lastBackupCodeUsedAt = date;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1;
+  }
+
+  /**
+   * Enable 2FA with all required fields in a single atomic operation
+   * This prevents version increment issues when setting multiple fields
+   */
+  public enable2FA(secret: string, backupCodes: string[]): Result<void> {
+    this._props.twoFactorSecret = secret;
+    this._props.twoFactorEnabled = true;
+    this._props.twoFactorBackupCodes = backupCodes;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1; // Only increment once
+    return Result.ok();
+  }
+
+  /**
+   * Disable 2FA and clear all 2FA-related fields
+   */
+  public disable2FA(): Result<void> {
+    this._props.twoFactorSecret = null;
+    this._props.twoFactorEnabled = false;
+    this._props.twoFactorBackupCodes = [];
+    this._props.lastBackupCodeUsedAt = null;
+    this._props.updatedAt = new Date();
+    this._props.version = (this._props.version ?? 0) + 1; // Only increment once
+    return Result.ok();
+  }
+
   /**
    * Returns a plain object representation (for database persistence)
    */
@@ -397,6 +493,10 @@ export class User {
       passwordResetToken: this._props.passwordResetToken ?? null,
       passwordResetExpiry: this._props.passwordResetExpiry ?? null,
       refreshToken: this._props.refreshToken ?? null,
+      twoFactorSecret: this._props.twoFactorSecret ?? null,
+      twoFactorEnabled: this._props.twoFactorEnabled ?? false,
+      twoFactorBackupCodes: this._props.twoFactorBackupCodes ?? [],
+      lastBackupCodeUsedAt: this._props.lastBackupCodeUsedAt ?? null,
       deletedAt: this._props.deletedAt ?? null,
       version: this._props.version ?? 0,
       createdAt: this._props.createdAt ?? new Date(),
@@ -436,6 +536,10 @@ export class User {
         passwordResetToken: validData.passwordResetToken,
         passwordResetExpiry: validData.passwordResetExpiry,
         refreshToken: validData.refreshToken,
+        twoFactorSecret: validData.twoFactorSecret,
+        twoFactorEnabled: validData.twoFactorEnabled,
+        twoFactorBackupCodes: validData.twoFactorBackupCodes,
+        lastBackupCodeUsedAt: validData.lastBackupCodeUsedAt,
         deletedAt: validData.deletedAt,
         version: validData.version,
         createdAt: validData.createdAt,

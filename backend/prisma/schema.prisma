@@ -30,6 +30,12 @@ model User {
   // Refresh token for JWT
   refreshToken  String?
 
+  // Two-Factor Authentication
+  twoFactorSecret     String?   // Encrypted TOTP secret
+  twoFactorEnabled    Boolean   @default(false)
+  twoFactorBackupCodes String[] @default([]) // Hashed backup codes
+  lastBackupCodeUsedAt DateTime?
+
   // Soft delete pattern
   deletedAt     DateTime?
 

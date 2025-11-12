@@ -11,10 +11,11 @@ interface AuthState {
   rememberMe: boolean;
 
   // Actions
-  login: (credentials: LoginCredentials, rememberMe?: boolean) => Promise<void>;
+  login: (credentials: LoginCredentials, rememberMe?: boolean) => Promise<{ requiresTwoFactor: boolean; userId?: string }>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
   clearError: () => void;
+  setAuthenticatedUser: (user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -29,8 +30,21 @@ export const useAuthStore = create<AuthState>()(
       login: async (credentials, rememberMe = false) => {
         set({ isLoading: true, error: null, rememberMe });
         try {
-          const { user } = await authService.login(credentials);
-          set({ user, isAuthenticated: true, isLoading: false });
+          const result = await authService.login(credentials);
+
+          // Check if 2FA is required
+          if (result.requiresTwoFactor && result.userId) {
+            set({ isLoading: false });
+            return { requiresTwoFactor: true, userId: result.userId };
+          }
+
+          // Normal login (no 2FA)
+          if (result.user && result.tokens) {
+            set({ user: result.user, isAuthenticated: true, isLoading: false });
+            return { requiresTwoFactor: false };
+          }
+
+          throw new Error('Invalid login response');
         } catch (error: any) {
           set({
             error: error.message || 'Login failed',
@@ -62,6 +76,10 @@ export const useAuthStore = create<AuthState>()(
       },
 
       clearError: () => set({ error: null }),
+
+      setAuthenticatedUser: (user) => {
+        set({ user, isAuthenticated: true, error: null });
+      },
     }),
     {
       name: 'dms-auth-storage', // localStorage key

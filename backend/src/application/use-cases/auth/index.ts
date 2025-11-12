@@ -10,3 +10,7 @@ export * from './RefreshToken.usecase.js';
 export * from './VerifyEmail.usecase.js';
 export * from './ForgotPassword.usecase.js';
 export * from './ResetPassword.usecase.js';
+export * from './Enable2FA.usecase.js';
+export * from './Verify2FA.usecase.js';
+export * from './Disable2FA.usecase.js';
+export * from './Verify2FALogin.usecase.js';

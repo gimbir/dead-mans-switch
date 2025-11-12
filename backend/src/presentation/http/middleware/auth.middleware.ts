@@ -84,6 +84,13 @@ export function authenticate(
     req.userEmail = payload.email;
     req.isVerified = payload.isVerified;
 
+    // Also attach to req.user for consistency with Express convention
+    req.user = {
+      userId: payload.userId,
+      email: payload.email,
+      type: 'access' as const,
+    };
+
     // Continue to next middleware/controller
     next();
   } catch (error) {

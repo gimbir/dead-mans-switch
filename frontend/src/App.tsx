@@ -6,19 +6,17 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 
 // Components
 import { ProtectedRoute } from '@components/common/ProtectedRoute';
+import { PublicOnlyRoute } from '@components/common/PublicOnlyRoute';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 // Pages
 import { HomePage } from '@pages/HomePage';
 import { LoginPage } from '@pages/auth/LoginPage';
 import { RegisterPage } from '@pages/auth/RegisterPage';
+import { Verify2FAPage } from '@pages/auth/Verify2FAPage';
 import { DashboardPage } from '@pages/dashboard/DashboardPage';
-import {
-  SwitchListPage,
-  SwitchCreatePage,
-  SwitchDetailPage,
-  SwitchEditPage
-} from '@pages/switch';
+import { SettingsPage } from '@pages/settings/SettingsPage';
+import { SwitchListPage, SwitchCreatePage, SwitchDetailPage, SwitchEditPage } from '@pages/switch';
 import { ThemeDemoPage } from '@pages/ThemeDemoPage';
 import { NotFoundPage } from '@pages/NotFoundPage';
 
@@ -39,127 +37,148 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <BrowserRouter>
-        {/* Toast notifications */}
-        <Toaster
-          position='top-right'
-          toastOptions={{
-            duration: 4000,
-            className: '',
-            style: {
-              background: 'rgb(var(--bg-card))',
-              color: 'rgb(var(--text-primary))',
-              border: '1px solid rgb(var(--border-primary))',
-              borderRadius: '0.5rem',
-              padding: '1rem',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-            },
-            success: {
-              duration: 3000,
+          {/* Toast notifications */}
+          <Toaster
+            position='top-right'
+            toastOptions={{
+              duration: 4000,
+              className: '',
               style: {
                 background: 'rgb(var(--bg-card))',
                 color: 'rgb(var(--text-primary))',
-                border: '1px solid rgb(34 197 94)',
+                border: '1px solid rgb(var(--border-primary))',
+                borderRadius: '0.5rem',
+                padding: '1rem',
+                boxShadow:
+                  '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                fontSize: '0.875rem',
+                fontWeight: '500'
               },
-              iconTheme: {
-                primary: 'rgb(34 197 94)',
-                secondary: 'rgb(var(--bg-card))',
-              }
-            },
-            error: {
-              duration: 5000,
-              style: {
-                background: 'rgb(var(--bg-card))',
-                color: 'rgb(var(--text-primary))',
-                border: '1px solid rgb(239 68 68)',
+              success: {
+                duration: 3000,
+                style: {
+                  background: 'rgb(var(--bg-card))',
+                  color: 'rgb(var(--text-primary))',
+                  border: '1px solid rgb(34 197 94)'
+                },
+                iconTheme: {
+                  primary: 'rgb(34 197 94)',
+                  secondary: 'rgb(var(--bg-card))'
+                }
               },
-              iconTheme: {
-                primary: 'rgb(239 68 68)',
-                secondary: 'rgb(var(--bg-card))',
-              }
-            },
-            loading: {
-              style: {
-                background: 'rgb(var(--bg-card))',
-                color: 'rgb(var(--text-primary))',
-                border: '1px solid rgb(var(--color-primary))',
+              error: {
+                duration: 5000,
+                style: {
+                  background: 'rgb(var(--bg-card))',
+                  color: 'rgb(var(--text-primary))',
+                  border: '1px solid rgb(239 68 68)'
+                },
+                iconTheme: {
+                  primary: 'rgb(239 68 68)',
+                  secondary: 'rgb(var(--bg-card))'
+                }
               },
-              iconTheme: {
-                primary: 'rgb(var(--color-primary))',
-                secondary: 'rgb(var(--bg-card))',
+              loading: {
+                style: {
+                  background: 'rgb(var(--bg-card))',
+                  color: 'rgb(var(--text-primary))',
+                  border: '1px solid rgb(var(--color-primary))'
+                },
+                iconTheme: {
+                  primary: 'rgb(var(--color-primary))',
+                  secondary: 'rgb(var(--bg-card))'
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
 
-        <Routes>
-        {/* Public Routes */}
-        <Route
-          path={ROUTES.HOME}
-          element={<HomePage />}
-        />
-        <Route
-          path={ROUTES.LOGIN}
-          element={<LoginPage />}
-        />
-        <Route
-          path={ROUTES.REGISTER}
-          element={<RegisterPage />}
-        />
-        <Route
-          path={ROUTES.THEME_DEMO}
-          element={<ThemeDemoPage />}
-        />
+          <Routes>
+            {/* Public Routes */}
+            <Route
+              path={ROUTES.HOME}
+              element={<HomePage />}
+            />
+            <Route
+              path={ROUTES.LOGIN}
+              element={
+                <PublicOnlyRoute>
+                  <LoginPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path={ROUTES.REGISTER}
+              element={
+                <PublicOnlyRoute>
+                  <RegisterPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path={ROUTES.VERIFY_2FA}
+              element={<Verify2FAPage />}
+            />
+            <Route
+              path={ROUTES.THEME_DEMO}
+              element={<ThemeDemoPage />}
+            />
 
-        {/* Protected Routes */}
-        <Route
-          path={ROUTES.DASHBOARD}
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={ROUTES.SWITCHES}
-          element={
-            <ProtectedRoute>
-              <SwitchListPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={ROUTES.SWITCH_CREATE}
-          element={
-            <ProtectedRoute>
-              <SwitchCreatePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={ROUTES.SWITCH_EDIT}
-          element={
-            <ProtectedRoute>
-              <SwitchEditPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={ROUTES.SWITCH_DETAIL}
-          element={
-            <ProtectedRoute>
-              <SwitchDetailPage />
-            </ProtectedRoute>
-          }
-        />
+            {/* Protected Routes */}
+            <Route
+              path={ROUTES.DASHBOARD}
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.SWITCHES}
+              element={
+                <ProtectedRoute>
+                  <SwitchListPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.SWITCH_CREATE}
+              element={
+                <ProtectedRoute>
+                  <SwitchCreatePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.SWITCH_EDIT}
+              element={
+                <ProtectedRoute>
+                  <SwitchEditPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.SWITCH_DETAIL}
+              element={
+                <ProtectedRoute>
+                  <SwitchDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTES.SETTINGS}
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* 404 Page */}
-        <Route
-          path='*'
-          element={<NotFoundPage />}
-        />
-        </Routes>
+            {/* 404 Page */}
+            <Route
+              path='*'
+              element={<NotFoundPage />}
+            />
+          </Routes>
         </BrowserRouter>
       </ThemeProvider>
     </ErrorBoundary>

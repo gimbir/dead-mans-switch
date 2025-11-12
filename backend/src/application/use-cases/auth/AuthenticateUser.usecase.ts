@@ -80,21 +80,31 @@ export class AuthenticateUserUseCase {
       return Result.fail<AuthResponseDto>('Invalid email or password');
     }
 
-    // Step 4: Check if password needs rehashing (security update)
+    // Step 4: Check if 2FA is enabled
+    if (user.twoFactorEnabled) {
+      // Return userId for 2FA verification step
+      // Frontend will redirect to 2FA verification page
+      return Result.ok<AuthResponseDto>({
+        requiresTwoFactor: true,
+        userId: user.id,
+      } as any); // Type assertion needed for compatibility
+    }
+
+    // Step 5: Check if password needs rehashing (security update)
     const needsRehash = await this.hashingService.needsRehash(user.password);
     if (needsRehash) {
       // TODO: Rehash password in a background job or next update
       console.log(`User ${user.id} password needs rehashing`);
     }
 
-    // Step 5: Generate new JWT tokens
+    // Step 6: Generate new JWT tokens
     const refreshTokenPayload: RefreshTokenPayload = {
       userId: user.id,
       tokenVersion: 0, // TODO: Implement token versioning for invalidation
     };
     const refreshToken = JwtUtil.generateRefreshToken(refreshTokenPayload);
 
-    // Step 6: Update user with new refresh token
+    // Step 7: Update user with new refresh token
     const setRefreshTokenResult = user.setRefreshToken(refreshToken);
     if (setRefreshTokenResult.isFailure) {
       return Result.fail<AuthResponseDto>(setRefreshTokenResult.error as string);
@@ -108,7 +118,7 @@ export class AuthenticateUserUseCase {
 
     const updatedUser = updateResult.value;
 
-    // Step 7: Generate access token
+    // Step 8: Generate access token
     const accessTokenPayload: AccessTokenPayload = {
       userId: updatedUser.id,
       email: updatedUser.email.getValue(),
@@ -116,7 +126,7 @@ export class AuthenticateUserUseCase {
     };
     const accessToken = JwtUtil.generateAccessToken(accessTokenPayload);
 
-    // Step 8: Create response DTO
+    // Step 9: Create response DTO
     const userDataDto: UserDataDto = {
       id: updatedUser.id,
       email: updatedUser.email.getValue(),

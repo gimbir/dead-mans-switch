@@ -19,6 +19,7 @@
 import { Router } from 'express';
 import { AuthController } from '@presentation/http/controllers/AuthController.js';
 import { validate } from '@presentation/http/middleware/validation.middleware.js';
+import { authenticate } from '@presentation/http/middleware/auth.middleware.js';
 import { authValidators } from '@presentation/validators/auth.validator.js';
 
 /**
@@ -278,6 +279,97 @@ export function createAuthRouter(authController: AuthController): Router {
     '/reset-password',
     validate(authValidators.resetPassword),
     authController.resetPassword.bind(authController)
+  );
+
+  /**
+   * POST /auth/2fa/enable
+   * Enable 2FA for authenticated user
+   * Requires authentication
+   *
+   * Response: 200 OK
+   * {
+   *   success: true,
+   *   data: {
+   *     secret: string (encrypted, temporary),
+   *     qrCodeDataUrl: string,
+   *     backupCodes: string[]
+   *   }
+   * }
+   */
+  router.post(
+    '/2fa/enable',
+    authenticate,
+    authController.enable2FA.bind(authController)
+  );
+
+  /**
+   * POST /auth/2fa/verify
+   * Verify and complete 2FA setup
+   * Requires authentication
+   *
+   * Request Body:
+   * - token: string (6-digit TOTP code)
+   * - encryptedSecret: string (from enable response)
+   * - backupCodes: string[] (from enable response)
+   *
+   * Response: 200 OK
+   * {
+   *   success: true,
+   *   data: { success: true, message: string }
+   * }
+   */
+  router.post(
+    '/2fa/verify',
+    authenticate,
+    validate(authValidators.verify2FA),
+    authController.verify2FA.bind(authController)
+  );
+
+  /**
+   * POST /auth/2fa/disable
+   * Disable 2FA for authenticated user
+   * Requires authentication
+   *
+   * Request Body:
+   * - password: string (user's password for verification)
+   * - token: string (optional 2FA token for extra security)
+   *
+   * Response: 200 OK
+   * {
+   *   success: true,
+   *   data: { success: true, message: string }
+   * }
+   */
+  router.post(
+    '/2fa/disable',
+    authenticate,
+    validate(authValidators.disable2FA),
+    authController.disable2FA.bind(authController)
+  );
+
+  /**
+   * POST /auth/2fa/verify-login
+   * Verify 2FA token during login
+   * Called after successful email/password authentication
+   *
+   * Request Body:
+   * - userId: string
+   * - token: string (6-digit TOTP or backup code)
+   *
+   * Response: 200 OK
+   * {
+   *   success: true,
+   *   data: {
+   *     accessToken: string,
+   *     refreshToken: string,
+   *     user: { userId, email, name, isVerified }
+   *   }
+   * }
+   */
+  router.post(
+    '/2fa/verify-login',
+    validate(authValidators.verify2FALogin),
+    authController.verify2FALogin.bind(authController)
   );
 
   return router;

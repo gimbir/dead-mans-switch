@@ -18,7 +18,16 @@
     "of": "/",
     "optional": "İsteğe Bağlı",
     "unknown": "Bilinmiyor",
-    "pageInfo": "Sayfa {{current}} / {{total}}"
+    "pageInfo": "Sayfa {{current}} / {{total}}",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "download": "İndir",
+    "status": "Durum",
+    "enabled": "Aktif",
+    "disabled": "Pasif",
+    "enable": "Etkinleştir",
+    "disable": "Devre Dışı Bırak",
+    "comingSoon": "Yakında"
   },
   "auth": {
     "login": {
@@ -80,6 +89,60 @@
       "nameRequired": "Ad gerekli",
       "nameMin": "Ad en az 2 karakter olmalı",
       "nameMax": "Ad en fazla 50 karakter olmalı"
+    },
+    "twoFactor": {
+      "title": "İki Faktörlü Kimlik Doğrulama",
+      "description": "Hesabınıza ekstra güvenlik katmanı ekleyin",
+      "verifyTitle": "İki Faktörlü Kimlik Doğrulama",
+      "verifyInstructions": "Kimlik doğrulama uygulamanızdan 6 haneli kodu girin",
+      "backupCodeInstructions": "Yedek kodlarınızdan birini girin",
+      "tokenLabel": "Doğrulama Kodu",
+      "tokenPlaceholder": "000000",
+      "backupCodeLabel": "Yedek Kod",
+      "backupCodePlaceholder": "XXXX-XXXX-XXXX",
+      "tokenRequired": "Doğrulama kodu gerekli",
+      "tokenLength": "Kod tam olarak 6 haneli olmalı",
+      "tokenNumeric": "Kod sadece rakamlardan oluşmalı",
+      "tokenInvalid": "Geçersiz doğrulama kodu formatı",
+      "backupCodeFormat": "Yedek kod XXXX-XXXX-XXXX formatında olmalı",
+      "verify": "Doğrula",
+      "verifying": "Doğrulanıyor...",
+      "verifySuccess": "Başarıyla doğrulandı!",
+      "verifyError": "Geçersiz doğrulama kodu. Lütfen tekrar deneyin.",
+      "useBackupCode": "Bunun yerine yedek kod kullan",
+      "useAuthenticatorCode": "Kimlik doğrulama kodunu kullan",
+      "backToLogin": "Girişe dön",
+      "securityNote": "Hesabınız iki faktörlü kimlik doğrulama ile korunuyor",
+      "setupTitle": "İki Faktörlü Kimlik Doğrulamayı Etkinleştir",
+      "whatIs2FA": "İki Faktörlü Kimlik Doğrulama Nedir?",
+      "twoFactorDescription": "İki faktörlü kimlik doğrulama (2FA) hesabınıza ekstra bir güvenlik katmanı ekler. Giriş yapmak için hem parolanıza hem de telefonunuzdan bir koda ihtiyacınız olacak.",
+      "setupSteps": "Kurulum Adımları:",
+      "step1": "Bir kimlik doğrulama uygulaması indirin (Google Authenticator, Authy, vb.)",
+      "step2": "QR kodunu kimlik doğrulama uygulamanızla tarayın",
+      "step3": "Yedek kodlarınızı güvenli bir yere kaydedin",
+      "step4": "Doğrulamak için uygulamanızdan kodu girin",
+      "enable": "2FA'yı Etkinleştir",
+      "enableSuccess": "İki faktörlü kimlik doğrulama başarıyla etkinleştirildi!",
+      "setupError": "2FA kurulumu başarısız. Lütfen tekrar deneyin.",
+      "scanQRCode": "Adım 1: QR Kodunu Tarayın",
+      "scanInstructions": "Bu QR kodunu kimlik doğrulama uygulamanızla tarayın",
+      "saveBackupCodes": "Önemli: Yedek Kodlarınızı Kaydedin",
+      "backupCodesWarning": "Bu kodları güvenli bir yerde saklayın. Kimlik doğrulama uygulamanıza erişiminizi kaybederseniz hesabınıza erişmek için bunları kullanabilirsiniz.",
+      "backupCodesTitle": "Adım 2: Yedek Kodları Kaydedin",
+      "backupCodesCopied": "Yedek kodlar panoya kopyalandı!",
+      "backupCodesDownloaded": "Yedek kodlar indirildi!",
+      "verifySetup": "Adım 3: Kurulumu Doğrulayın",
+      "enterCodeFromApp": "Kurulumu tamamlamak için kimlik doğrulama uygulamanızdan 6 haneli kodu girin",
+      "disableTitle": "İki Faktörlü Kimlik Doğrulamayı Devre Dışı Bırak",
+      "disableWarningTitle": "Uyarı: Azaltılmış Güvenlik",
+      "disableWarning": "2FA'yı devre dışı bırakmak hesabınızı daha az güvenli hale getirecek. Giriş yapmak için sadece parolanıza ihtiyacınız olacak.",
+      "enterPasswordToDisable": "Onaylamak için parolanızı girin",
+      "optionalTokenHelp": "Ekstra güvenlik için mevcut 2FA kodunuzu da sağlayabilirsiniz",
+      "disableConfirm": "2FA'yı Devre Dışı Bırak",
+      "disableSuccess": "İki faktörlü kimlik doğrulama başarıyla devre dışı bırakıldı",
+      "disableError": "2FA devre dışı bırakılamadı. Lütfen parolanızı kontrol edin.",
+      "recoveryOptions": "Kurtarma Seçenekleri",
+      "backupCodesInfo": "Kimlik doğrulama uygulamanıza erişiminizi kaybederseniz, giriş yapmak için yedek kodlarınızdan birini kullanabilirsiniz. Bunları güvende tuttuğunuzdan emin olun!"
     }
   },
   "dashboard": {
@@ -252,9 +315,41 @@
       "deleteFailed": "Mesaj silinemedi"
     }
   },
+  "settings": {
+    "title": "Ayarlar",
+    "description": "Hesap ayarlarınızı ve tercihlerinizi yönetin",
+    "tabs": {
+      "security": "Güvenlik",
+      "profile": "Profil",
+      "notifications": "Bildirimler",
+      "preferences": "Tercihler"
+    },
+    "security": {
+      "passwordTitle": "Parola",
+      "passwordDescription": "Parolanızı değiştirin",
+      "sessionsTitle": "Aktif Oturumlar",
+      "sessionsDescription": "Aktif oturumlarınızı ve cihazlarınızı yönetin"
+    },
+    "profile": {
+      "infoTitle": "Profil Bilgileri",
+      "name": "Ad",
+      "email": "E-posta",
+      "accountCreated": "Hesap Oluşturma",
+      "editInfo": "Profil bilgilerini düzenle"
+    },
+    "notifications": {
+      "title": "Bildirim Ayarları",
+      "description": "Bildirimleri nasıl alacağınızı yönetin"
+    },
+    "preferences": {
+      "title": "Tercihler",
+      "description": "Deneyiminizi özelleştirin"
+    }
+  },
   "header": {
     "dashboard": "Ana Sayfa",
     "switches": "Anahtarlar",
+    "settings": "Ayarlar",
     "logout": "Çıkış Yap",
     "login": "Giriş Yap",
     "signUp": "Kayıt Ol"

@@ -15,3 +15,8 @@ export type {
   SwitchTriggeredNotification,
 } from './INotificationService.js';
 export type { IHashingService } from './IHashingService.js';
+export type {
+  ITwoFactorService,
+  TwoFactorSecret,
+  TwoFactorVerification,
+} from './ITwoFactorService.js';

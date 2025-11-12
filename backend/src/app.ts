@@ -51,6 +51,10 @@ import { RefreshTokenUseCase } from '@application/use-cases/auth/RefreshToken.us
 import { VerifyEmailUseCase } from '@application/use-cases/auth/VerifyEmail.usecase.js';
 import { ForgotPasswordUseCase } from '@application/use-cases/auth/ForgotPassword.usecase.js';
 import { ResetPasswordUseCase } from '@application/use-cases/auth/ResetPassword.usecase.js';
+import { Enable2FAUseCase } from '@application/use-cases/auth/Enable2FA.usecase.js';
+import { Verify2FAUseCase } from '@application/use-cases/auth/Verify2FA.usecase.js';
+import { Disable2FAUseCase } from '@application/use-cases/auth/Disable2FA.usecase.js';
+import { Verify2FALoginUseCase } from '@application/use-cases/auth/Verify2FALogin.usecase.js';
 
 // Use Cases - Switch
 import { CreateSwitchUseCase } from '@application/use-cases/switch/CreateSwitch.usecase.js';
@@ -80,6 +84,8 @@ import { MessageRepository } from '@infrastructure/repositories/MessageRepositor
 import { HashingService } from '@infrastructure/services/HashingService.js';
 import { EmailService } from '@infrastructure/services/EmailService.js';
 import { CacheService } from '@infrastructure/cache/CacheService.js';
+import { TwoFactorService } from '@infrastructure/services/TwoFactorService.js';
+import { EncryptionService } from '@infrastructure/services/EncryptionService.js';
 
 // Database
 import { prisma } from '@infrastructure/database/prisma.client.js';
@@ -123,7 +129,9 @@ export function createApp(): Application {
   const hashingService = new HashingService();
   const emailService = new EmailService();
   const cacheService = new CacheService();
-  // Note: EncryptionService not used here - messages are encrypted client-side (zero-knowledge architecture)
+  const twoFactorService = new TwoFactorService();
+  const encryptionService = new EncryptionService();
+  // Note: EncryptionService is used for 2FA secrets, messages are encrypted client-side (zero-knowledge architecture)
 
   // ===== Initialize Repositories =====
   // Cast to any to avoid Prisma generated types mismatch between node_modules and src/generated
@@ -154,6 +162,29 @@ export function createApp(): Application {
     userRepository,
     hashingService,
     cacheService
+  );
+
+  // ===== Initialize Use Cases - Two-Factor Authentication =====
+  const enable2FAUseCase = new Enable2FAUseCase(
+    userRepository,
+    twoFactorService,
+    encryptionService
+  );
+  const verify2FAUseCase = new Verify2FAUseCase(
+    userRepository,
+    twoFactorService,
+    encryptionService
+  );
+  const disable2FAUseCase = new Disable2FAUseCase(
+    userRepository,
+    hashingService,
+    twoFactorService,
+    encryptionService
+  );
+  const verify2FALoginUseCase = new Verify2FALoginUseCase(
+    userRepository,
+    twoFactorService,
+    encryptionService
   );
 
   // ===== Initialize Use Cases - Switch =====
@@ -202,7 +233,11 @@ export function createApp(): Application {
     refreshTokenUseCase,
     verifyEmailUseCase,
     forgotPasswordUseCase,
-    resetPasswordUseCase
+    resetPasswordUseCase,
+    enable2FAUseCase,
+    verify2FAUseCase,
+    disable2FAUseCase,
+    verify2FALoginUseCase
   );
 
   const switchController = new SwitchController(
@@ -223,7 +258,7 @@ export function createApp(): Application {
     listMessagesUseCase
   );
 
-  const healthController = new HealthController(prisma, cacheService);
+  const healthController = new HealthController(prisma as any, cacheService);
 
   // ===== Create Routers =====
   const authRouter = createAuthRouter(authController);
