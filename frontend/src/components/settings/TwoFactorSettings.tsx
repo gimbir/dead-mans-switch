@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { twoFactorService } from '@services/twoFactor.service';
 import { TwoFactorSetup } from './TwoFactorSetup';
 import { PasswordInput } from '@components/common/PasswordInput';
+import { useAuthStore } from '@stores/authStore';
 
 interface TwoFactorSettingsProps {
   isEnabled: boolean;
@@ -28,6 +29,7 @@ export const TwoFactorSettings = ({
   onStatusChange,
 }: TwoFactorSettingsProps) => {
   const { t } = useTranslation();
+  const { update2FAStatus } = useAuthStore();
   const [isEnabled, setIsEnabled] = useState(initialEnabled);
   const [showSetup, setShowSetup] = useState(false);
   const [showDisableForm, setShowDisableForm] = useState(false);
@@ -38,11 +40,9 @@ export const TwoFactorSettings = ({
     password: z.string().min(1, t('auth.validation.passwordRequired')),
     token: z
       .string()
-      .optional()
-      .refine(
-        (val) => !val || (val.length === 6 && /^\d{6}$/.test(val)),
-        t('auth.twoFactor.tokenInvalid')
-      ),
+      .min(1, t('auth.twoFactor.tokenRequired'))
+      .length(6, t('auth.twoFactor.tokenLength'))
+      .regex(/^\d{6}$/, t('auth.twoFactor.tokenNumeric')),
   });
 
   type DisableFormData = z.infer<typeof disableSchema>;
@@ -65,6 +65,7 @@ export const TwoFactorSettings = ({
     setIsEnabled(true);
     setShowSetup(false);
     onStatusChange?.(true);
+    update2FAStatus(true); // Update auth store
   };
 
   const handleSetupCancel = () => {
@@ -93,6 +94,7 @@ export const TwoFactorSettings = ({
       reset();
       toast.success(t('auth.twoFactor.disableSuccess'));
       onStatusChange?.(false);
+      update2FAStatus(false); // Update auth store
     } catch (error: any) {
       toast.error(error.message || t('auth.twoFactor.disableError'));
     } finally {
@@ -174,7 +176,7 @@ export const TwoFactorSettings = ({
               htmlFor="token"
               className="block text-sm font-medium text-theme-primary"
             >
-              {t('auth.twoFactor.tokenLabel')} ({t('common.optional')})
+              {t('auth.twoFactor.tokenLabel')}
             </label>
             <input
               id="token"
@@ -194,7 +196,7 @@ export const TwoFactorSettings = ({
               <p className="mt-1 text-sm text-red-600">{errors.token.message}</p>
             )}
             <p className="mt-1 text-xs text-theme-tertiary">
-              {t('auth.twoFactor.optionalTokenHelp')}
+              {t('auth.twoFactor.disableTokenHelp')}
             </p>
           </div>
 

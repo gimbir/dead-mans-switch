@@ -34,10 +34,12 @@ export interface Verify2FALoginResponse {
   accessToken: string;
   refreshToken: string;
   user: {
-    userId: string;
+    id: string;
     email: string;
     name: string;
     isVerified: boolean;
+    twoFactorEnabled: boolean;
+    createdAt: Date;
   };
 }
 
@@ -143,10 +145,12 @@ export class Verify2FALoginUseCase {
       accessToken,
       refreshToken,
       user: {
-        userId: user.id,
+        id: user.id,
         email: user.email.getValue(),
         name: user.name,
         isVerified: user.isVerified,
+        twoFactorEnabled: user.twoFactorEnabled,
+        createdAt: user.createdAt,
       },
     });
   }

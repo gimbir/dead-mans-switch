@@ -16,6 +16,7 @@ interface AuthState {
   logout: () => void;
   clearError: () => void;
   setAuthenticatedUser: (user: User) => void;
+  update2FAStatus: (enabled: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -79,6 +80,12 @@ export const useAuthStore = create<AuthState>()(
 
       setAuthenticatedUser: (user) => {
         set({ user, isAuthenticated: true, error: null });
+      },
+
+      update2FAStatus: (enabled) => {
+        set((state) => ({
+          user: state.user ? { ...state.user, twoFactorEnabled: enabled } : null,
+        }));
       },
     }),
     {

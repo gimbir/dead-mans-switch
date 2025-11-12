@@ -36,8 +36,9 @@ export interface User {
   email: string;
   name: string;
   isVerified: boolean;
+  twoFactorEnabled: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface AuthTokens {
@@ -170,7 +171,7 @@ export interface Verify2FASetupRequest {
 
 export interface Disable2FARequest {
   password: string; // User's password for verification
-  token?: string; // Optional 2FA token
+  token: string; // 2FA token from authenticator app (required)
 }
 
 export interface Verify2FALoginRequest {

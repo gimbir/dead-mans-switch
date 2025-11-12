@@ -137,7 +137,7 @@
       "disableWarningTitle": "Warning: Reduced Security",
       "disableWarning": "Disabling 2FA will make your account less secure. You'll only need your password to sign in.",
       "enterPasswordToDisable": "Enter your password to confirm",
-      "optionalTokenHelp": "For extra security, you can also provide your current 2FA code",
+      "disableTokenHelp": "Enter your current 2FA code from your authenticator app",
       "disableConfirm": "Disable 2FA",
       "disableSuccess": "Two-factor authentication disabled successfully",
       "disableError": "Failed to disable 2FA. Please check your password.",

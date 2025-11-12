@@ -135,6 +135,7 @@ export class RegisterUserUseCase {
       email: savedUser.email.getValue(),
       name: savedUser.name,
       isVerified: savedUser.isVerified,
+      twoFactorEnabled: savedUser.twoFactorEnabled,
       createdAt: savedUser.createdAt,
     };
 

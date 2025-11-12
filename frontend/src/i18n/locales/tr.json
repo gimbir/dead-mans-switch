@@ -137,7 +137,7 @@
       "disableWarningTitle": "Uyarı: Azaltılmış Güvenlik",
       "disableWarning": "2FA'yı devre dışı bırakmak hesabınızı daha az güvenli hale getirecek. Giriş yapmak için sadece parolanıza ihtiyacınız olacak.",
       "enterPasswordToDisable": "Onaylamak için parolanızı girin",
-      "optionalTokenHelp": "Ekstra güvenlik için mevcut 2FA kodunuzu da sağlayabilirsiniz",
+      "disableTokenHelp": "Authenticator uygulamanızdan mevcut 2FA kodunuzu girin",
       "disableConfirm": "2FA'yı Devre Dışı Bırak",
       "disableSuccess": "İki faktörlü kimlik doğrulama başarıyla devre dışı bırakıldı",
       "disableError": "2FA devre dışı bırakılamadı. Lütfen parolanızı kontrol edin.",

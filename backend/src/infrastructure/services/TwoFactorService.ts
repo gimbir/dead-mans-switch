@@ -121,19 +121,14 @@ export class TwoFactorService implements ITwoFactorService {
    */
   async hashBackupCodes(codes: string[]): Promise<string[]> {
     const saltRounds = 10;
-    const hashedCodes = await Promise.all(
-      codes.map((code) => bcrypt.hash(code, saltRounds))
-    );
+    const hashedCodes = await Promise.all(codes.map((code) => bcrypt.hash(code, saltRounds)));
     return hashedCodes;
   }
 
   /**
    * Verify backup code and return its index if found
    */
-  async verifyBackupCode(
-    code: string,
-    hashedCodes: string[]
-  ): Promise<number> {
+  async verifyBackupCode(code: string, hashedCodes: string[]): Promise<number> {
     for (let i = 0; i < hashedCodes.length; i++) {
       const hashedCode = hashedCodes[i];
       if (!hashedCode) continue;

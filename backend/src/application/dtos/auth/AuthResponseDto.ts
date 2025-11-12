@@ -20,6 +20,7 @@ export const UserDataDtoSchema = z.object({
   email: z.email(),
   name: z.string(),
   isVerified: z.boolean(),
+  twoFactorEnabled: z.boolean(),
   createdAt: z.date(),
 });
 

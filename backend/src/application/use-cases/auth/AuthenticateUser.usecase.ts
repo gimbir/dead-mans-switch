@@ -132,6 +132,7 @@ export class AuthenticateUserUseCase {
       email: updatedUser.email.getValue(),
       name: updatedUser.name,
       isVerified: updatedUser.isVerified,
+      twoFactorEnabled: updatedUser.twoFactorEnabled,
       createdAt: updatedUser.createdAt,
     };
 

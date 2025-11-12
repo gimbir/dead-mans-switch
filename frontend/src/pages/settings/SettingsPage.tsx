@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, User, Bell, Globe } from 'lucide-react';
 import { MainLayout } from '@components/layout/MainLayout';
@@ -22,9 +22,15 @@ export const SettingsPage = () => {
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'security' | 'profile' | 'notifications' | 'preferences'>('security');
 
-  // Placeholder for user's 2FA status - in real app, fetch from API
-  // For now, we'll assume it's disabled until user enables it
-  const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  // Initialize 2FA status from user data
+  const [is2FAEnabled, setIs2FAEnabled] = useState(user?.twoFactorEnabled ?? false);
+
+  // Update 2FA status when user changes
+  useEffect(() => {
+    if (user) {
+      setIs2FAEnabled(user.twoFactorEnabled);
+    }
+  }, [user]);
 
   const tabs = [
     { id: 'security' as const, label: t('settings.tabs.security'), icon: Shield },
